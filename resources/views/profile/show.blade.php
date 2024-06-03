@@ -166,36 +166,6 @@
                 @endforeach
             </ul>
         </div>
-
-        <!-- Mis Watchlists -->
-        <div class="tab-pane fade" id="watchlists" role="tabpanel" aria-labelledby="watchlists-tab">
-            <h2>Mis Watchlists</h2>
-
-            <form action="{{ route('watchlists.store') }}" method="POST">
-                @csrf
-                <div class="form-group">
-                    <label for="watchlist_name">Nombre de la Watchlist</label>
-                    <input type="text" class="form-control" id="watchlist_name" name="name">
-                </div>
-                <button type="submit" class="btn btn-primary">Crear Watchlist</button>
-            </form>
-
-            @foreach ($user->watchlists as $watchlist)
-            <div class="watchlist">
-                <h3>{{ $watchlist->name }}</h3>
-                <ul>
-                    @foreach ($watchlist->items as $item)
-                    <li>{{ $item->movie_id }}
-                        <form action="{{ route('watchlists.remove_movie', [$watchlist->id, $item->id]) }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                        </form>
-                    </li>
-                    @endforeach
-                </ul>
-            </div>
-            @endforeach
-        </div>
     </div>
 </div>
 @endsection

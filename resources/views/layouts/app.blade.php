@@ -59,6 +59,12 @@
                 </li>
             @endauth
 
+            @auth
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('watchlists.index') }}">Watchlists</a>
+                </li>
+            @endauth
+
             <!--Si el usuario está con una sesion iniciada, aparecera en el header la opción de cerrar sesión-->
             @auth
                 <li class="nav-item">

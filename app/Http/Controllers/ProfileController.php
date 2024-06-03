@@ -11,7 +11,12 @@ class ProfileController extends Controller
     public function show()
     {
         $user = Auth::user();
-        return view('profile.show', compact('user'));
+        $watchlists = $user->watchlists;
+        return view('profile.show', compact(
+        'user',
+        'watchlists'
+    ));
+        
     }
 
     public function update(Request $request)

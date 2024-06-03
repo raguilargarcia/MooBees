@@ -11,7 +11,7 @@ class WatchlistItem extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['watchlist_id', 'movie_id'];
+    protected $fillable = ['watchlist_id', 'movie_id', 'movie_title']; // Asegúrate de incluir movie_title
 
     public function watchlist()
     {

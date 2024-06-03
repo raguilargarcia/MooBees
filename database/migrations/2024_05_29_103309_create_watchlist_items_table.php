@@ -12,11 +12,10 @@ class CreateWatchlistItemsTable extends Migration
     {
         Schema::create('watchlist_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('watchlist_id');
-            $table->unsignedBigInteger('movie_id');
+            $table->foreignId('watchlist_id')->constrained()->onDelete('cascade');
+            $table->integer('movie_id');
+            $table->string('movie_title');
             $table->timestamps();
-
-            $table->foreign('watchlist_id')->references('id')->on('watchlists')->onDelete('cascade');
         });
     }
 
@@ -25,4 +24,3 @@ class CreateWatchlistItemsTable extends Migration
         Schema::dropIfExists('watchlist_items');
     }
 }
-

@@ -46,6 +46,8 @@ Route::post('/movies/{movie}/reviews', [ReviewController::class, 'store'])->name
 
 Route::middleware('auth')->group(function () {
     Route::get('/perfil', [ProfileController::class, 'show'])->name('profile.show');
+    Route::post('/watchlists', [WatchlistController::class, 'store'])->name('watchlists.store');
+    Route::post('/watchlists/{watchlist}/remove_movie/{movie}', [WatchlistController::class, 'removeMovie'])->name('watchlists.remove_movie');
     Route::post('/perfil/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/perfil/follow/{user}', [ProfileController::class, 'follow'])->name('profile.follow');
     Route::post('/perfil/unfollow/{user}', [ProfileController::class, 'unfollow'])->name('profile.unfollow');
@@ -62,8 +64,9 @@ Route::post('reviews/{review}/toggle-dislike', [LikeController::class, 'toggleDi
 Route::post('/reviews/{review}/report', [ReportController::class, 'store'])->name('reviews.report')->middleware('auth');
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
+    Route::get('/watchlists', [WatchlistController::class, 'index'])->name('watchlists.index');
     Route::post('/watchlists', [WatchlistController::class, 'store'])->name('watchlists.store');
     Route::post('/watchlists/{watchlist}/add-movie', [WatchlistController::class, 'addMovie'])->name('watchlists.add_movie');
-    Route::post('/watchlists/{watchlist}/{item}/remove-movie', [WatchlistController::class, 'removeMovie'])->name('watchlists.remove_movie');
+    Route::post('/watchlists/{watchlist}/remove-movie/{item}', [WatchlistController::class, 'removeMovie'])->name('watchlists.remove_movie');
 });
