@@ -20,7 +20,6 @@ return new class extends Migration
         $table->timestamps();
 
         $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        // Puedes agregar una clave foránea para el ID de la película si es necesario
     });
 }
 

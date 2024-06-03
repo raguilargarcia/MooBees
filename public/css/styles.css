@@ -1,0 +1,114 @@
+/* color del fondo oscuro pero no mucho*/
+main, body {
+    background-color: #333;
+    color: #fff;
+}
+
+/* Estilos para la lista de películas */
+#popular-list,
+#trending-list,
+#movies-list {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#popular-list li,
+#trending-list li,
+#movies-list li {
+    margin: 0.5rem;
+    text-align: center;
+    flex-basis: 200px; /* Set the desired width for each container */
+}
+
+
+#popular-list img,
+#trending-list img,
+#movies-list img {
+    width: 100%;
+    height: auto;
+    min-height: 300px;
+    display: block;
+    margin: 0 auto;
+}
+
+
+#popular-list a,
+#trending-list a,
+#movies-list a{
+    text-decoration: none;
+    color: #333;
+}
+
+
+#popular-list a:hover,
+#trending-list a:hover,
+#movies-list a:hover{
+    color: #007bff;
+}
+
+  /* Estilos para el carrusel */
+  .carousel-item {
+    padding: 0;
+  }
+  .carousel-item .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 -5px; /* Agrega margen negativo para corregir el espacio entre las columnas */
+  }
+
+  .carousel-item .col-md-2 {
+    padding: 0 5px; /* Agrega relleno para separar las imágenes */
+  }
+
+.carousel-item img {
+    max-width: 100%;
+    height: 500px; /* Set the desired height for all images */
+    object-fit: cover; /* Ensure the images maintain their aspect ratio */
+    border-radius: 5px; /* Add rounded corners to the images */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a soft shadow */
+}
+
+
+.container {
+    margin: 0;
+    padding: 0 1rem;
+}
+
+#suggestions {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ddd;
+  max-height: 150px;
+  overflow-y: auto;
+  position: absolute;
+  background-color: #fff;
+  width: 200px;
+  z-index: 1000;
+}
+
+#suggestions li {
+  padding: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+}
+
+#suggestions li:last-child {
+  border-bottom: none;
+}
+
+#suggestions li:hover {
+  background-color: #f0f0f0;
+}
+
+.form-container {
+  position: relative;
+}
+
+.reset-button {
+  margin-top: 20px;
+}
