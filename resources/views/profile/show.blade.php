@@ -1,9 +1,7 @@
-<!-- resources/views/profile.blade.php -->
-
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container profile-page">
     <h1>Perfil de {{ $user->username }}</h1>
 
     @if(session('error'))
@@ -20,14 +18,22 @@
 
     <!-- Información principal del perfil -->
     <div class="profile-header text-center">
-        @if ($user->profile_picture)
-        <img src="{{ asset('images/profile/' . $user->profile_picture) }}" alt="Foto de perfil" width="150">
-        @endif
+        <img src="{{ $user->profile_photo_path ? asset('images/profile/' . $user->profile_photo_path) : 'https://via.placeholder.com/150?text=Usuario' }}" alt="Foto de perfil" width="150" class="rounded-circle profile-photo">
         <h2>{{ $user->name }}</h2>
         <p>{{ '@' . $user->username }}</p>
+        <div class="followers-following">
+            <div class="follower-count">
+                <strong>Seguidores</strong>
+                <p><a href="{{ route('profile.followers', $user->id) }}">{{ $user->followers->count() }}</a></p>
+            </div>
+            <div class="following-count">
+                <strong>Seguidos</strong>
+                <p><a href="{{ route('profile.followings', $user->id) }}">{{ $user->followings->count() }}</a></p>
+            </div>
+        </div>
     </div>
 
-    <form action="{{ route('profile.search') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('profile.search') }}" method="POST" enctype="multipart/form-data" class="search-form">
         @csrf
         <div class="form-group">
             <label for="search">Buscar usuarios</label>
@@ -44,18 +50,6 @@
         <li class="nav-item">
             <a class="nav-link" id="edit-profile-tab" data-toggle="tab" href="#edit-profile" role="tab" aria-controls="edit-profile" aria-selected="false">Editar Perfil</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" id="followings-tab" data-toggle="tab" href="#followings" role="tab" aria-controls="followings" aria-selected="false">Usuarios Seguidos</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="followers-tab" data-toggle="tab" href="#followers" role="tab" aria-controls="followers" aria-selected="false">Seguidores</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="following-reviews-tab" data-toggle="tab" href="#following-reviews" role="tab" aria-controls="following-reviews" aria-selected="false">Reseñas de Seguidos</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="watchlists-tab" data-toggle="tab" href="#watchlists" role="tab" aria-controls="watchlists" aria-selected="false">Mis Watchlists</a>
-        </li>
     </ul>
 
     <!-- Contenido de las pestañas -->
@@ -63,24 +57,38 @@
         <!-- Mis Reseñas -->
         <div class="tab-pane fade show active" id="my-reviews" role="tabpanel" aria-labelledby="my-reviews-tab">
             <h2>Mis Reseñas</h2>
-            <ul>
-                @foreach ($user->reviews as $review)
-                @php
-                // Obtener el título de la película utilizando el ID de la película
-                $apiKey = '6e77f3008b5489918d40768636265cbd';
-                $response = Http::get("https://api.themoviedb.org/3/movie/{$review->movie_id}?api_key={$apiKey}&language=es");
-                $movieData = $response->json();
+            <div class="reviews-container">
+                <ul class="list-group">
+                    @foreach ($user->reviews as $review)
+                    @php
+                    // Obtener el título de la película utilizando el ID de la película
+                    $apiKey = '6e77f3008b5489918d40768636265cbd';
+                    $response = Http::get("https://api.themoviedb.org/3/movie/{$review->movie_id}?api_key={$apiKey}&language=es");
+                    $movieData = $response->json();
 
-                // Verificar si la llamada a la API fue exitosa y si se obtuvieron los datos de la película
-                if ($response->successful() && isset($movieData['title'])) {
-                $movieTitle = $movieData['title'];
-                } else {
-                $movieTitle = 'Película Desconocida';
-                }
-                @endphp
-                <li>{{ $movieTitle }}: {{ $review->comment }}</li>
-                @endforeach
-            </ul>
+                    // Verificar si la llamada a la API fue exitosa y si se obtuvieron los datos de la película
+                    if ($response->successful() && isset($movieData['title'])) {
+                    $movieTitle = $movieData['title'];
+                    } else {
+                    $movieTitle = 'Película Desconocida';
+                    }
+                    @endphp
+                    <li class="list-group-item d-flex flex-column">
+                        <div>
+                            <strong>{{ $movieTitle }}</strong>: {{ $review->comment }}
+                        </div>
+                        <div class="btn-group mt-2" role="group" aria-label="Basic example">
+                            <a href="{{ route('reviews.edit', $review->id) }}" class="btn btn-warning btn-sm edit-btn"><i class="fas fa-edit"></i></a>
+                            <form action="{{ route('reviews.destroy', $review->id) }}" method="POST" class="delete-review-form" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm delete-btn" onclick="return confirmDelete(event);"><i class="fas fa-trash"></i></button>
+                            </form>
+                        </div>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
 
         <!-- Editar Perfil -->
@@ -89,8 +97,8 @@
             <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
-                    <label for="profile_picture">Foto de perfil</label>
-                    <input type="file" class="form-control" id="profile_picture" name="profile_picture">
+                    <label for="profile_photo_path">Foto de perfil</label>
+                    <input type="file" class="form-control-file" id="profile_photo_path" name="profile_photo_path">
                 </div>
 
                 <div class="form-group">
@@ -99,73 +107,75 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Correo electrónico</label>
-                    <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}">
+                    <label for="username">Nombre de usuario</label>
+                    <input type="text" class="form-control" id="username" name="username" value="{{ $user->username }}">
                 </div>
 
                 <div class="form-group">
                     <label for="password">Contraseña (opcional)</label>
-                    <input type="password" class="form-control" id="password" name="password">
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password" name="password">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="password_confirmation">Confirmar contraseña</label>
-                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="togglePasswordConfirmation">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Actualizar perfil</button>
             </form>
         </div>
-
-        <!-- Usuarios Seguidos -->
-        <div class="tab-pane fade" id="followings" role="tabpanel" aria-labelledby="followings-tab">
-            <h2>Usuarios Seguidos</h2>
-            <ul>
-                @foreach ($user->followings as $following)
-                <li>{{ $following->username }}
-                    <form action="{{ route('profile.unfollow', $following) }}" method="POST" style="display:inline;">
-                        @csrf
-                        <button type="submit" class="btn btn-danger btn-sm">Dejar de seguir</button>
-                    </form>
-                </li>
-                @endforeach
-            </ul>
-        </div>
-
-        <!-- Seguidores -->
-        <div class="tab-pane fade" id="followers" role="tabpanel" aria-labelledby="followers-tab">
-            <h2>Seguidores</h2>
-            <ul>
-                @foreach ($user->followers as $follower)
-                <li>{{ $follower->name }}</li>
-                @endforeach
-            </ul>
-        </div>
-
-        <!-- Reseñas de Usuarios Seguidos -->
-        <div class="tab-pane fade" id="following-reviews" role="tabpanel" aria-labelledby="following-reviews-tab">
-            <h2>Reseñas de Usuarios Seguidos</h2>
-            <ul>
-                @foreach ($user->followings as $following)
-                @foreach ($following->reviews as $review)
-                @php
-                // Obtener el título de la película utilizando el ID de la película
-                $apiKey = '6e77f3008b5489918d40768636265cbd';
-                $response = Http::get("https://api.themoviedb.org/3/movie/{$review->movie_id}?api_key={$apiKey}&language=es");
-                $movieData = $response->json();
-
-                // Verificar si la llamada a la API fue exitosa y si se obtuvieron los datos de la película
-                if ($response->successful() && isset($movieData['title'])) {
-                $movieTitle = $movieData['title'];
-                } else {
-                $movieTitle = 'Película Desconocida';
-                }
-                @endphp
-                <li>Reseña de {{$following->username}} para "{{ $movieTitle }}": {{ $review->comment }}</li>
-                @endforeach
-                @endforeach
-            </ul>
-        </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const password = document.getElementById('password');
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+
+    document.getElementById('togglePasswordConfirmation').addEventListener('click', function () {
+        const passwordConfirmation = document.getElementById('password_confirmation');
+        const type = passwordConfirmation.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordConfirmation.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+
+    function confirmDelete(event) {
+        event.preventDefault();
+        const form = event.target.closest('form');
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "No podrás revertir esto",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminarlo',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+        return false;
+    }
+</script>
 @endsection

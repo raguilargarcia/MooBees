@@ -1,7 +1,4 @@
 <?php
-// app/Http/Controllers/WatchlistController.php
-
-// app/Http/Controllers/WatchlistController.php
 
 namespace App\Http\Controllers;
 
@@ -9,7 +6,6 @@ use App\Models\Watchlist;
 use App\Models\WatchlistItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 
 class WatchlistController extends Controller
 {
@@ -31,22 +27,26 @@ class WatchlistController extends Controller
         return redirect()->back()->with('success', 'Watchlist creada.');
     }
 
-    public function addMovie(Request $request)
+    public function addMovie(Request $request, $watchlist)
     {
         $request->validate([
-            'watchlist_id' => 'required|integer|exists:watchlists,id',
             'movie_id' => 'required|integer',
-            'movie_title' => 'required|string'
+            'movie_title' => 'required|string',
+            'movie_poster_path' => 'required|string'
         ]);
 
-        $watchlist = Watchlist::where('id', $request->watchlist_id)
+        // Debugging purpose
+        // dd($request->all());
+
+        $watchlist = Watchlist::where('id', $watchlist)
             ->where('user_id', Auth::id())
             ->firstOrFail();
 
         WatchlistItem::create([
-            'watchlist_id' => $request->watchlist_id,
+            'watchlist_id' => $watchlist->id,
             'movie_id' => $request->movie_id,
             'movie_title' => $request->movie_title,
+            'movie_poster_path' => $request->movie_poster_path
         ]);
 
         return redirect()->back()->with('success', 'Película añadida a la Watchlist.');
@@ -63,6 +63,22 @@ class WatchlistController extends Controller
 
         return redirect()->back()->with('success', 'Película eliminada de la Watchlist.');
     }
+
+    public function show($watchlistId)
+    {
+        $watchlist = Watchlist::with('items')->findOrFail($watchlistId);
+        return view('watchlists.show', compact('watchlist'));
+    }
+
+    public function destroy($id)
+{
+    $watchlist = Watchlist::where('id', $id)
+        ->where('user_id', Auth::id())
+        ->firstOrFail();
+
+    $watchlist->delete();
+
+    return redirect()->back()->with('success', 'Watchlist eliminada.');
 }
 
-
+}

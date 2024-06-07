@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Models\ShownMovie;
+use Illuminate\Support\Facades\Cache;
 
 class GameController extends Controller
 {
@@ -11,61 +13,59 @@ class GameController extends Controller
 
     public function showGame()
     {
-        // Obtener el número de pasos de la sesión, o establecerlo en 1 si no existe
-        $step = session('step', 1);
+        $movie = Cache::get('daily_movie');
+        $step = Cache::get('game_step', 1);
 
-        if (!session()->has('movie')) {
-            $randomMovie = $this->getRandomMovie();
+        if (!$movie) {
+            $movie = $this->getRandomMovie();
 
-            if (!$randomMovie) {
+            if (!$movie) {
                 return redirect()->route('showGame')->with('error', 'No se pudo obtener la película. Inténtalo de nuevo.');
             }
 
-            session(['movie' => $randomMovie]);
+            Cache::put('daily_movie', $movie, now()->addDay());
+            Cache::put('game_step', 1); // Reset the step to 1 when a new movie is set
         }
 
-        $movie = session('movie');
+        $titleRepresentation = $this->getTitleRepresentation($movie['title']);
 
-        // Pasar el número de pasos a la vista
-        return view('game.play', ['movie' => $movie, 'step' => $step]);
+        return view('game.play', ['movie' => $movie, 'step' => $step, 'titleRepresentation' => $titleRepresentation]);
     }
+
     public function nextClue(Request $request)
     {
-        // Obtener el número de pasos de la sesión, o establecerlo en 1 si no existe
-        $step = session('step', 1) + 1;
-        $movie = session('movie');
+        // Increment the step only when the next clue button is pressed
+        $step = Cache::increment('game_step');
 
         if ($step > 6) {
-            return view('game.play', ['movie' => $movie, 'step' => 6]);
+            Cache::put('game_step', 6);
+            $step = 6;
         }
 
-        // Guardar el número de pasos en la sesión
-        session(['step' => $step]);
-
-        return view('game.play', ['movie' => $movie, 'step' => $step]);
+        $movie = Cache::get('daily_movie');
+        $titleRepresentation = $this->getTitleRepresentation($movie['title']);
+        return view('game.play', ['movie' => $movie, 'step' => $step, 'titleRepresentation' => $titleRepresentation]);
     }
-
 
     public function guessMovie(Request $request)
     {
         $guessedMovie = $request->input('movie');
-        $movie = session('movie');
-        $step = $request->input('step', 1);
+        $movie = Cache::get('daily_movie');
+        $step = Cache::get('game_step', 1);
 
         if (strtolower($guessedMovie) === strtolower($movie['title'])) {
+            // Mostrar todas las pistas restantes
+            $step = 6; // Set step to the maximum to show all clues
+            Cache::put('game_step', $step);
             return view('game.play', ['movie' => $movie, 'step' => $step, 'success' => true]);
         } else {
-            // Si todas las pistas ya se han mostrado, mostrar el título de la película
-            if ($step >= 3) {
-                $step = 4; // Mostrar el título en el cuarto paso
+            // Incrementa el paso por intento incorrecto
+            $step = Cache::increment('game_step');
+            if ($step > 6) {
+                $step = 6;
             }
-            // Si no quedan más pistas, saltar a la siguiente pista
-            elseif ($step == 2) {
-                $step = 3;
-            } else {
-                $step += 1;
-            }
-            return view('game.play', ['movie' => $movie, 'step' => $step, 'incorrectGuess' => true]);
+            $titleRepresentation = $this->getTitleRepresentation($movie['title']);
+            return view('game.play', ['movie' => $movie, 'step' => $step, 'incorrectGuess' => true, 'titleRepresentation' => $titleRepresentation]);
         }
     }
 
@@ -86,48 +86,73 @@ class GameController extends Controller
         return response()->json([]);
     }
 
-    public function resetGame()
-    {
-        // Eliminar tanto la película como el número de pasos de la sesión
-        session()->forget(['movie', 'step']);
-        return redirect()->route('showGame');
-    }
-
     private function getRandomMovie()
     {
         $response = Http::get("https://api.themoviedb.org/3/movie/popular", [
             'api_key' => $this->tmdbApiKey,
-            'language' => 'es-ES',
-            'page' => rand(1, 10)
+            'language' => 'es-ES'
         ]);
 
         if ($response->successful()) {
-            $movies = $response->json()['results'];
-            $randomMovie = $movies[array_rand($movies)];
+            $totalPages = $response->json()['total_pages'];
 
-            $movieDetails = Http::get("https://api.themoviedb.org/3/movie/{$randomMovie['id']}", [
-                'api_key' => $this->tmdbApiKey,
-                'language' => 'es-ES',
-                'append_to_response' => 'credits' // Solicitar detalles de créditos (actores y director)
-            ]);
+            do {
+                $page = rand(1, $totalPages);
+                $response = Http::get("https://api.themoviedb.org/3/movie/popular", [
+                    'api_key' => $this->tmdbApiKey,
+                    'language' => 'es-ES',
+                    'page' => $page
+                ]);
 
-            if ($movieDetails->successful()) {
-                $movieData = $movieDetails->json();
+                if ($response->successful()) {
+                    $movies = $response->json()['results'];
 
-                // Extraer detalles relevantes de la respuesta de la API
-                $movie = [
-                    'title' => $movieData['title'],
-                    'genres' => $movieData['genres'],
-                    'release_date' => $movieData['release_date'],
-                    'overview' => $movieData['overview'],
-                    'director' => $movieData['credits']['crew'][0]['name'], // Primer director de la lista de créditos
-                    'actors' => array_slice($movieData['credits']['cast'], 0, 3) // Primeros tres actores de la lista de créditos
-                ];
+                    foreach ($movies as $movie) {
+                        $shownMovie = ShownMovie::where('movie_id', $movie['id'])->first();
+                        if (!$shownMovie) {
+                            $movieDetails = Http::get("https://api.themoviedb.org/3/movie/{$movie['id']}", [
+                                'api_key' => $this->tmdbApiKey,
+                                'language' => 'es-ES',
+                                'append_to_response' => 'credits'
+                            ]);
 
-                return $movie;
-            }
+                            if ($movieDetails->successful()) {
+                                $movieData = $movieDetails->json();
+
+                                $movie = [
+                                    'id' => $movieData['id'],
+                                    'title' => $movieData['title'],
+                                    'genres' => $movieData['genres'],
+                                    'release_date' => $movieData['release_date'],
+                                    'overview' => $movieData['overview'],
+                                    'director' => $this->getDirector($movieData['credits']['crew']),
+                                    'actors' => array_slice($movieData['credits']['cast'], 0, 3)
+                                ];
+
+                                return $movie;
+                            }
+                        }
+                    }
+                }
+            } while (true);
         }
 
         return null;
     }
+
+    private function getDirector($crew)
+    {
+        foreach ($crew as $member) {
+            if ($member['job'] == 'Director') {
+                return $member['name'];
+            }
+        }
+        return 'Desconocido';
+    }
+
+    private function getTitleRepresentation($title)
+    {
+        return implode(' ', array_map(fn($char) => $char == ' ' ? '   ' : '_', str_split($title)));
+    }
 }
+

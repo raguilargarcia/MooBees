@@ -1,10 +1,8 @@
-<!-- resources/views/watchlists/index.blade.php -->
-
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>Mis Watchlists</h1>
+<div class="container watchlists-page">
+    <h1>Crear Watchlists</h1>
 
     @if(session('success'))
     <div class="alert alert-success">
@@ -12,7 +10,7 @@
     </div>
     @endif
 
-    <form action="{{ route('watchlists.store') }}" method="POST">
+    <form action="{{ route('watchlists.store') }}" method="POST" class="create-watchlist-form">
         @csrf
         <div class="form-group">
             <label for="watchlist_name">Nombre de la Watchlist</label>
@@ -20,68 +18,48 @@
         </div>
         <button type="submit" class="btn btn-primary">Crear Watchlist</button>
     </form>
+</div>
 
-    @foreach ($watchlists as $watchlist)
-    <div class="watchlist mt-4">
-        <h3>{{ $watchlist->name }}</h3>
-        <ul id="watchlist-items-{{ $watchlist->id }}">
-            @foreach ($watchlist->items as $item)
-            <li id="watchlist-item-{{ $item->id }}">
-                {{ $item->movie_title }}
-                <form action="{{ route('watchlists.remove_movie', [$watchlist->id, $item->id]) }}" method="POST" style="display:inline;">
+<div class="container watchlists-page">
+    <h1>Mis Watchlists</h1>
+
+    <div class="watchlists-container">
+        <ul class="list-group mt-4">
+            @foreach ($watchlists as $watchlist)
+            <li class="list-group-item d-flex align-items-center position-relative">
+                <div class="watchlist-title w-100">
+                    <a href="{{ route('watchlists.show', $watchlist->id) }}" class="full-width-link">{{ $watchlist->name }}</a>
+                </div>
+                <form action="{{ route('watchlists.destroy', $watchlist->id) }}" method="POST" class="delete-form">
                     @csrf
-                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-link p-0" onclick="return confirmDelete(event);"><i class="fas fa-times text-danger"></i></button>
                 </form>
             </li>
             @endforeach
         </ul>
     </div>
-    @endforeach
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.add-movie-form').forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
-
-                var watchlistId = form.dataset.watchlistId;
-                var movieId = form.querySelector('input[name="movie_id"]').value;
-                var csrfToken = form.querySelector('input[name="_token"]').value;
-
-                fetch(`/watchlists/${watchlistId}/add-movie`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({
-                        movie_id: movieId
-                    })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        var newItem = document.createElement('li');
-                        newItem.id = `watchlist-item-${data.item.id}`;
-                        newItem.innerHTML = `${data.item.movie_title}
-                            <form action="/watchlists/${watchlistId}/remove-movie/${data.item.id}" method="POST" style="display:inline;">
-                                <input type="hidden" name="_token" value="${csrfToken}">
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                            </form>`;
-                        document.getElementById(`watchlist-items-${watchlistId}`).appendChild(newItem);
-                    } else {
-                        alert('Error al añadir la película a la Watchlist.');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-            });
-        });
+function confirmDelete(event) {
+    event.preventDefault();
+    const form = event.target.closest('form');
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "No podrás revertir esto",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminarlo',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
     });
+    return false;
+}
 </script>
 @endsection

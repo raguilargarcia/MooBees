@@ -1,81 +1,222 @@
-/* color del fondo oscuro pero no mucho*/
-main, body {
-    background-color: #333;
-    color: #fff;
+html,
+body {
+  font-family: 'Roboto', sans-serif;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #1a1717;
+  /* Fondo negro */
+  color: #FFF;
+  /* Texto blanco */
+}
+
+/* El contenedor principal debe ocupar todo el espacio restante */
+main {
+  flex: 1;
+  background-color: #1a1717;
+  /* Asegurar que el fondo del main sea negro */
+  padding: 20px;
+  /* Añadir padding para evitar que el contenido toque los bordes */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Playfair Display', serif;
+}
+
+.btn {
+  font-family: 'Roboto', sans-serif;
+}
+
+.input-group .form-control {
+  font-family: 'Roboto', sans-serif;}
+
+p {
+  font-family: 'Roboto', sans-serif; /* Fuente base para párrafos */
+}
+
+a {font-family: 'Roboto', sans-serif;}
+
+h2 {
+
+  color: #FFC30B;
+  /* Títulos en amarillo */
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+hr {
+  border-color: #FFC30B;
+  /* Líneas divisorias en amarillo */
+  margin: 20px 0;
+  /* Espaciado vertical */
+}
+
+.input-group .form-control {
+  background-color: #333;
+  /* Fondo del input en gris oscuro */
+  border: none;
+  color: #FFF;
+}
+
+.input-group .btn {
+  background-color: #FFC30B;
+  /* Botón de búsqueda en amarillo */
+  border: none;
+  color: #000;
+  /* Texto negro en el botón */
 }
 
 /* Estilos para la lista de películas */
 #popular-list,
 #trending-list,
 #movies-list {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 #popular-list li,
 #trending-list li,
 #movies-list li {
-    margin: 0.5rem;
-    text-align: center;
-    flex-basis: 200px; /* Set the desired width for each container */
+  margin: 0.5rem;
+  text-align: center;
+  flex-basis: 200px;
+  /* Set the desired width for each container */
 }
-
 
 #popular-list img,
 #trending-list img,
 #movies-list img {
-    width: 100%;
-    height: auto;
-    min-height: 300px;
-    display: block;
-    margin: 0 auto;
+  width: 100%;
+  height: auto;
+  min-height: 300px;
+  display: block;
+  margin: 0 auto;
 }
-
 
 #popular-list a,
 #trending-list a,
-#movies-list a{
-    text-decoration: none;
-    color: #333;
+#movies-list a {
+  text-decoration: none;
+  color: #333;
 }
-
 
 #popular-list a:hover,
 #trending-list a:hover,
-#movies-list a:hover{
-    color: #007bff;
+#movies-list a:hover {
+  color: #007bff;
 }
 
-  /* Estilos para el carrusel */
-  .carousel-item {
-    padding: 0;
-  }
-  .carousel-item .row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 -5px; /* Agrega margen negativo para corregir el espacio entre las columnas */
-  }
+/* Estilos para el carrusel */
+.carousel-item {
+  padding: 0;
+}
 
-  .carousel-item .col-md-2 {
-    padding: 0 5px; /* Agrega relleno para separar las imágenes */
-  }
+.carousel-item .row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 -5px;
+  /* Agrega margen negativo para corregir el espacio entre las columnas */
+}
+
+.carousel-item .col-md-3 {
+  flex: 0 0 25%;
+  /* Ajustar el ancho de cada columna al 25% */
+  max-width: 25%;
+  padding-right: 10px;
+  margin: 0 10px;
+  /* Añadir margen entre los elementos */
+}
+
 
 .carousel-item img {
-    max-width: 100%;
-    height: 500px; /* Set the desired height for all images */
-    object-fit: cover; /* Ensure the images maintain their aspect ratio */
-    border-radius: 5px; /* Add rounded corners to the images */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a soft shadow */
+  max-width: 100%;
+  height: auto;
+  border: 2px solid #FFC30B;
+  margin: 0 auto;
+  /* Centrando las imágenes */
+}
+
+.carousel-inner {
+  display: flex;
+  flex-wrap: nowrap;
+  /* Evita que las imágenes se envuelvan */
+  overflow-x: auto;
+  /* Permite el desplazamiento horizontal si es necesario */
 }
 
 
+.carousel-item .col-2 {
+  flex: 0 0 20%;
+  max-width: 20%;
+}
+
+.row.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.row.no-gutters>[class*='col-'] {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.movie-link img {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-link:hover img {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos para las reseñas en la home */
+.top-reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 20px;
+  width: 100%;
+  /* Asegurar que ocupe todo el ancho */
+}
+
+.review {
+  background-color: #111;
+  /* Fondo de las reseñas en gris oscuro */
+  border: 1px solid #333;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  /* Asegura que el padding y el borde se incluyan en el tamaño total */
+}
+
+.review p {
+  color: #FFF;
+}
+
+.review strong {
+  color: #FFC30B;
+  /* Título de la película en amarillo */
+}
+
 .container {
-    margin: 0;
-    padding: 0 1rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+  /* Asegurar que ocupe todo el ancho */
+  max-width: 1200px;
+  /* Limitar el ancho máximo */
 }
 
 #suggestions {
@@ -111,4 +252,1104 @@ main, body {
 
 .reset-button {
   margin-top: 20px;
+}
+
+/* Estilos para el layout */
+
+.navbar {
+  background-color: #333;
+  /* Fondo de la navbar en gris oscuro */
+}
+
+.navbar-brand {
+  font-weight: bold;
+}
+
+.nav-link {
+  color: #FFD700;
+  /* Enlaces en la navbar en amarillo */
+}
+
+.nav-link:hover {
+  color: #FFF;
+  /* Cambio de color al pasar el mouse */
+}
+
+footer {
+  background-color: #333;
+  /* Fondo del pie de página en gris oscuro */
+  color: #FFD700;
+  /* Texto del pie de página en amarillo */
+  padding: 20px 0;
+  text-align: center;
+}
+
+/* Estilos específicos para las páginas */
+
+/* Página de búsqueda de películas */
+.search-page {
+  padding: 20px;
+  background-color: #111010;
+  color: #FFF;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-top: 20px;
+}
+
+.search-page h2 {
+  color: #FFC30B;
+  /* Títulos en amarillo */
+  margin-top: 20px;
+  text-align: center;
+}
+
+.search-page .input-group .form-control {
+  background-color: #333;
+  /* Fondo del input en gris oscuro */
+  border: none;
+  color: #FFF;
+}
+
+.search-page .input-group .btn {
+  background-color: #FFC30B;
+  /* Botón de búsqueda en amarillo */
+  border: none;
+  color: #000;
+  /* Texto negro en el botón */
+}
+
+.search-page .pagination {
+  display: block;
+  margin-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+.search-page .pagination a,
+.search-page .pagination span {
+  display: inline-block;
+  padding: 5px 10px;
+  margin-right: 5px;
+  border-radius: 3px;
+  color: #333;
+  background-color: #fff;
+  text-decoration: none;
+}
+
+.search-page .pagination a:hover {
+  background-color: #FFC30B;
+  /* Cambiar el color de fondo al pasar el mouse */
+}
+
+.search-page .pagination .active {
+  background-color: #FFC30B;
+  color: #000;
+  border-color: #FFC30B;
+}
+
+.search-page ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  justify-content: center;
+}
+
+.search-page li {
+  width: 200px;
+  margin: 10px;
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-page li:hover {
+  transform: scale(1.05);
+}
+
+.search-page img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.search-page p {
+  color: #FFF;
+}
+
+.search-page a.btn-primary {
+  display: inline-block;
+  margin-top: 20px;
+  background-color: #FFC30B;
+  border-color: #FFC30B;
+  color: #000;
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.search-page a.btn-primary:hover {
+  background-color: #e0c64e;
+  border-color: #e0c64e;
+  color: #000;
+}
+
+/* Página de detalles de la película */
+.movie-detail-container {
+  background-color: #1a1a1a;
+  padding: 20px;
+  border-radius: 10px;
+  color: #ffffff;
+}
+
+.movie-detail-container img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.movie-detail-container h1 {
+  color: #FFC30B;
+  margin-bottom: 20px;
+}
+
+.movie-detail-container p {
+  margin-bottom: 10px;
+}
+
+.movie-detail-container a {
+  color: #FFC30B;
+  text-decoration: none;
+}
+
+.movie-detail-container a:hover {
+  text-decoration: underline;
+}
+
+.movie-detail-container .btn-primary {
+  background-color: #FFC30B;
+  border-color: #FFC30B;
+  color: #000;
+}
+
+.movie-detail-container .btn-primary:hover {
+  background-color: #e0c64e;
+  border-color: #e0c64e;
+}
+
+.movie-detail-container .btn-danger {
+  background-color: #ff4c4c;
+  border-color: #ff4c4c;
+}
+
+.movie-detail-container .btn-danger:hover {
+  background-color: #e04444;
+  border-color: #e04444;
+}
+
+.movie-detail-container .form-control {
+  background-color: #333;
+  border: none;
+  color: #FFF;
+}
+
+.movie-detail-container .form-group label {
+  color: #FFF;
+}
+
+.modal-content {
+  background-color: #1a1a1a;
+  color: #FFF;
+}
+
+.modal-content .btn-secondary {
+  background-color: #333;
+  border-color: #333;
+}
+
+.modal-content .btn-secondary:hover {
+  background-color: #444;
+  border-color: #444;
+}
+
+/* Página de creación de reseñas */
+.review-form-container {
+  background-color: #1a1a1a;
+  padding: 20px;
+  border-radius: 10px;
+  color: #ffffff;
+}
+
+.review-form-container h1 {
+  color: #FFC30B;
+  margin-bottom: 20px;
+}
+
+.review-form-container .form-group label {
+  color: #FFC30B;
+}
+
+.review-form-container .form-control {
+  background-color: #333;
+  border: none;
+  color: #FFF;
+}
+
+.review-form-container .btn-primary {
+  background-color: #FFC30B;
+  border-color: #FFC30B;
+  color: #000;
+  display: block;
+  /* Hacer que el botón sea un bloque */
+  width: 100%;
+  /* Hacer que el botón ocupe todo el ancho */
+  margin-top: 20px;
+  /* Añadir margen superior */
+}
+
+.review-form-container .btn-primary:hover {
+  background-color: #e0c64e;
+  border-color: #e0c64e;
+}
+
+.review-form-container a {
+  color: #FFC30B;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.review-form-container a:hover {
+  text-decoration: underline;
+}
+
+/* Página de edición de reseñas */
+.review-edit-page {
+  padding: 20px;
+  background-color: #111010;
+  color: #FFF;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-top: 20px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.review-edit-page h1 {
+  color: #FFC30B;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.review-edit-page .form-group label {
+  color: #FFC30B;
+}
+
+.review-edit-page .form-control {
+  background-color: #333;
+  border: none;
+  color: #FFF;
+}
+
+.review-edit-page .form-control:focus {
+  background-color: #444;
+  color: #FFF;
+}
+
+.review-edit-page .btn-primary {
+  background-color: #FFC30B;
+  border-color: #FFC30B;
+  color: #000;
+  width: 100%;
+}
+
+.review-edit-page .btn-primary:hover {
+  background-color: #e0c64e;
+  border-color: #e0c64e;
+}
+
+/* Limitar el tamaño del div de reseñas y permitir el desplazamiento */
+.reviews-container {
+  max-height: 400px;
+  /* Puedes ajustar la altura máxima según tus necesidades */
+  overflow-y: auto;
+  border: 1px solid #444;
+  /* Añadir un borde para mejor visibilidad */
+  padding: 10px;
+  /* Añadir padding para separar el contenido del borde */
+  background-color: #1a1a1a;
+  /* Fondo gris oscuro */
+  border-radius: 5px;
+}
+
+.edit-btn,
+.delete-btn {
+  flex: none !important;
+  padding: 2px 5px;
+  /* Ajustar el padding del botón */
+  font-size: 0.75rem;
+  /* Ajustar el tamaño del texto del botón */
+}
+
+
+
+/* Estilos para la calificación por estrellas */
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  font-size: 2rem;
+  color: #FFC30B;
+}
+
+.star {
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.star:hover,
+.star:hover~.star {
+  color: #e0c64e;
+}
+
+
+/* Página del Juego de Adivinación de Películas */
+.guess-game-page {
+  padding: 20px;
+  text-align: center;
+}
+
+.guess-game-page h1 {
+  color: #FFC30B;
+  /* Títulos en amarillo */
+  margin-top: 20px;
+}
+
+.guess-game-page p {
+  color: #FFF;
+  /* Texto blanco */
+}
+
+.guess-game-page .form-container {
+  margin-top: 20px;
+}
+
+.guess-game-page .form-container form {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.guess-game-page .form-container input[type="text"] {
+  background-color: #333;
+  /* Fondo del input en gris oscuro */
+  border: none;
+  color: #FFF;
+  padding: 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.guess-game-page .form-container button {
+  background-color: #FFC30B;
+  /* Botón en amarillo */
+  border: none;
+  color: #000;
+  /* Texto negro */
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.guess-game-page .form-container button:hover {
+  background-color: #e0c64e;
+}
+
+.guess-game-page .form-container #suggestions {
+  list-style-type: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+  border: 1px solid #ddd;
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: #fff;
+  width: 200px;
+  z-index: 1000;
+  position: absolute;
+}
+
+.guess-game-page .form-container #suggestions li {
+  padding: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+}
+
+.guess-game-page .form-container #suggestions li:last-child {
+  border-bottom: none;
+}
+
+.guess-game-page .form-container #suggestions li:hover {
+  background-color: #f0f0f0;
+}
+
+.guess-game-page .form-container .btn-next-clue {
+  background-color: #333;
+  /* Botón de pista siguiente en gris oscuro */
+  border: none;
+  color: #FFF;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.guess-game-page .form-container .btn-next-clue:hover {
+  background-color: #444;
+}
+
+/* Estilos para posicionar la lista de sugerencias */
+.suggestions-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ddd;
+  max-height: 150px;
+  overflow-y: auto;
+  position: absolute;
+  background-color: #fff;
+  width: 100%;
+  z-index: 1000;
+  left: 0;
+  top: 100%;
+  /* Posiciona la lista justo debajo del input */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.suggestions-list li {
+  padding: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+}
+
+.suggestions-list li:last-child {
+  border-bottom: none;
+}
+
+.suggestions-list li:hover {
+  background-color: #f0f0f0;
+}
+
+/* Estilos adicionales para el contenedor del formulario */
+.form-container {
+  position: relative;
+}
+
+.input-group {
+  position: relative;
+}
+
+.input-group .form-control {
+  width: 100%;
+}
+
+/* Estilos de la página de perfil */
+.profile-page {
+  padding: 20px;
+  background-color: #111010;
+  color: #FFF;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-top: 20px;
+}
+
+.profile-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.profile-photo {
+  border: 2px solid #FFC30B;
+}
+
+.followers-following {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 10px;
+}
+
+.followers-following div {
+  text-align: center;
+}
+
+.followers-following a {
+  color: #FFC30B;
+  text-decoration: none;
+}
+
+.followers-following a:hover {
+  color: #FFC30B;
+  text-decoration: none;
+}
+
+.nav-tabs .nav-link {
+  color: #FFC30B;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #FFC30B;
+  color: #111010;
+}
+
+.tab-content {
+  margin-top: 20px;
+}
+
+.list-group-item {
+  background-color: #333;
+  border: 1px solid #444;
+  color: #FFF;
+}
+
+.btn-primary {
+  background-color: #FFC30B;
+  border-color: #FFC30B;
+  color: #000;
+}
+
+.btn-primary:hover {
+  background-color: #e0c64e;
+  border-color: #e0c64e;
+}
+
+.btn-danger {
+  background-color: #ff4c4c;
+  border-color: #ff4c4c;
+}
+
+.btn-danger:hover {
+  background-color: #e04444;
+  border-color: #e04444;
+}
+
+.reviews-container,
+.followers-following,
+.following-reviews {
+  margin-top: 20px;
+}
+
+.reviews-container ul,
+.followers-following ul,
+.following-reviews ul {
+  padding: 0;
+  list-style: none;
+}
+
+.reviews-container li,
+.followers-following li,
+.following-reviews li {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  color: #FFF;
+  /* Asegura que el texto sea blanco */
+  background-color: #444;
+  /* Asegura que el fondo sea un gris oscuro para contraste */
+}
+
+/* Estilos específicos para la página de seguidores y seguidos */
+.followers-page,
+.followings-page {
+  padding: 20px;
+  background-color: #111010;
+  color: #FFF;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-top: 20px;
+}
+
+.followers-page h1,
+.followings-page h1 {
+  color: #FFC30B;
+  margin-bottom: 20px;
+}
+
+.followers-page .list-group,
+.followings-page .list-group {
+  background-color: #111010;
+  border: none;
+}
+
+.followers-page .list-group-item,
+.followings-page .list-group-item {
+  background-color: #333;
+  border: 1px solid #444;
+  color: #FFF;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.followers-page .list-group-item:hover,
+.followings-page .list-group-item:hover {
+  background-color: #444;
+}
+
+.followers-page a,
+.followings-page a {
+  color: #FFC30B;
+  text-decoration: none;
+}
+
+.followers-page a:hover,
+.followings-page a:hover {
+  color: #e0c64e;
+  text-decoration: none;
+}
+
+
+
+/* Asegurarnos de que los iconos estén alineados y tengan el mismo tamaño */
+.review .btn-link {
+  color: #FFC30B;
+  font-size: 1.5em;
+}
+
+.review .btn-link:hover {
+  color: #d4b34a;
+}
+
+/* Color de los contadores de likes y dislikes */
+.like-count,
+.dislike-count {
+  color: #FFC30B;
+  margin-left: 5px;
+}
+
+.like-count:hover,
+.dislike-count:hover {
+  color: #d4b34a;
+}
+
+/* Estilos de la lista de Watchlists */
+.watchlist-title {
+  width: 100%;
+}
+
+
+/* Estilo para el icono de eliminar */
+.delete-form {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  /* Asegurarse de que esté por encima del enlace */
+}
+
+.delete-form .btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.delete-form .btn:hover {
+  color: #ff4c4c;
+}
+
+/* Estilos de la página de Watchlists */
+.watchlists-page {
+  padding: 20px;
+  background-color: #111010;
+  color: #FFF;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-top: 20px;
+}
+
+.watchlists-page h1 {
+  color: #FFC30B;
+  margin-bottom: 20px;
+}
+
+.watchlists-page .form-group label {
+  color: #FFC30B;
+}
+
+.watchlists-page .form-control {
+  background-color: #333;
+  border: none;
+  color: #FFF;
+}
+
+.watchlists-page .form-control:focus {
+  background-color: #444;
+  color: #FFF;
+}
+
+.watchlists-page .btn-primary {
+  background-color: #FFC30B;
+  border-color: #FFC30B;
+  color: #000;
+  width: 100%;
+}
+
+.watchlists-page .btn-primary:hover {
+  background-color: #e0c64e;
+  border-color: #e0c64e;
+}
+
+.watchlists-page .alert-success {
+  background-color: #4caf50;
+  border-color: #4caf50;
+  color: #FFF;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.watchlists-page a {
+  color: #FFC30B;
+  text-decoration: none;
+}
+
+.watchlists-page a:hover {
+  text-decoration: underline;
+}
+
+.watchlists-page p {
+  text-align: center;
+}
+
+.watchlists-page .list-group-item {
+  background-color: #333;
+  border: 1px solid #444;
+  color: #FFF;
+  margin-bottom: 10px;
+  padding: 0;
+  /* Remove padding to let the link fill the entire item */
+  position: relative;
+}
+
+.watchlists-page .list-group-item:hover {
+  background-color: #444;
+}
+
+.watchlists-page .list-group-item a.full-width-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 15px 20px;
+  /* Add padding for clickable area */
+  color: inherit;
+  text-decoration: none;
+  position: relative;
+  z-index: 1;
+}
+
+.watchlists-page .list-group-item a.full-width-link:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Estilos de la página de una Watchlist específica */
+.watchlist-page {
+  padding: 20px;
+  background-color: #111010;
+  color: #FFF;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-top: 20px;
+}
+
+.watchlist-page h1 {
+  color: #FFC30B;
+  margin-bottom: 20px;
+}
+
+.watchlist-page .card {
+  background-color: #333;
+  border: 1px solid #444;
+}
+
+.watchlist-page .card img {
+  border-bottom: 1px solid #444;
+}
+
+.watchlist-page .card-title {
+  color: #FFC30B;
+}
+
+.watchlist-page .btn-danger {
+  background-color: #ff4c4c;
+  border-color: #ff4c4c;
+}
+
+.watchlist-page .btn-danger:hover {
+  background-color: #e04444;
+  border-color: #e04444;
+}
+
+.watchlist-page .btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.watchlist-page .btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #5a6268;
+}
+
+/* Limitar el tamaño del div de Watchlists y permitir el desplazamiento */
+.watchlists-container {
+  max-height: 400px;
+  /* Puedes ajustar la altura máxima según tus necesidades */
+  overflow-y: auto;
+  border: 1px solid #444;
+  /* Añadir un borde para mejor visibilidad */
+  padding: 10px;
+  /* Añadir padding para separar el contenido del borde */
+  background-color: #111010;
+  /* Fondo gris oscuro */
+  border-radius: 5px;
+}
+
+/* Estilos de la página de inicio de sesión */
+.login-page {
+  padding: 20px;
+  background-color: #111010;
+  color: #FFF;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-top: 20px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.login-page h1 {
+  color: #FFC30B;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.login-page .form-group label {
+  color: #FFC30B;
+}
+
+.login-page .form-control {
+  background-color: #333;
+  border: none;
+  color: #FFF;
+}
+
+.login-page .form-control:focus {
+  background-color: #444;
+  color: #FFF;
+}
+
+.login-page .btn-primary {
+  background-color: #FFC30B;
+  border-color: #FFC30B;
+  color: #000;
+  width: 100%;
+}
+
+.login-page .btn-primary:hover {
+  background-color: #e0c64e;
+  border-color: #e0c64e;
+}
+
+.login-page .alert-danger {
+  background-color: #ff4c4c;
+  border-color: #ff4c4c;
+  color: #FFF;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.login-page a {
+  color: #FFC30B;
+  text-decoration: none;
+}
+
+.login-page a:hover {
+  text-decoration: underline;
+}
+
+.login-page p {
+  text-align: center;
+}
+
+/* Estilos de la página de registro */
+.register-page {
+  padding: 20px;
+  background-color: #111010;
+  color: #FFF;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-top: 20px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.register-page h1 {
+  color: #FFC30B;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.register-page .form-group label {
+  color: #FFC30B;
+}
+
+.register-page .form-control {
+  background-color: #333;
+  border: none;
+  color: #FFF;
+}
+
+.register-page .form-control:focus {
+  background-color: #444;
+  color: #FFF;
+}
+
+.register-page .btn-primary {
+  background-color: #FFC30B;
+  border-color: #FFC30B;
+  color: #000;
+  width: 100%;
+}
+
+.register-page .btn-primary:hover {
+  background-color: #e0c64e;
+  border-color: #e0c64e;
+}
+
+.register-page .alert-danger {
+  background-color: #ff4c4c;
+  border-color: #ff4c4c;
+  color: #FFF;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.register-page a {
+  color: #FFC30B;
+  text-decoration: none;
+}
+
+.register-page a:hover {
+  text-decoration: underline;
+}
+
+.register-page p {
+  text-align: center;
+}
+
+/* Estilos adicionales para los iconos en la home page */
+.top-reviews .review .icon-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.top-reviews .review .icon-container form {
+  display: inline;
+}
+
+.top-reviews .review .icon-container .btn {
+  background: none;
+  border: none;
+  color: #FFC30B;
+  font-size: 1.5em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.top-reviews .review .icon-container .btn:hover {
+  color: #d4b34a;
+}
+
+.top-reviews .review .icon-container .count {
+  color: #FFC30B;
+}
+
+.top-reviews .review .icon-container .count:hover {
+  color: #d4b34a;
+}
+
+.top-reviews .review .rating .fa-star {
+  color: #FFD700;
+  margin-right: 2px;
+}
+
+/* Estilos adicionales para los iconos en la página de detalles de la película */
+.movie-detail-container .review .icon-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.movie-detail-container .review .icon-container form {
+  display: inline;
+}
+
+.movie-detail-container .review .icon-container .btn {
+  background: none;
+  border: none;
+  color: #FFC30B;
+  font-size: 1.5em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.movie-detail-container .review .icon-container .btn:hover {
+  color: #d4b34a;
+}
+
+.movie-detail-container .review .icon-container .count {
+  color: #FFC30B;
+}
+
+.movie-detail-container .review .icon-container .count:hover {
+  color: #d4b34a;
+}
+
+.review .rating .fa-star {
+  color: #FFD700;
+  margin-right: 2px;
+}
+
+/* Estilos adicionales para los iconos en "Mis Reseñas" */
+.icon-group {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.icon-group .btn-link {
+  color: #FFC30B;
+  font-size: 1.5em;
+}
+
+.icon-group .btn-link:hover {
+  color: #d4b34a;
+}
+
+.list-group-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-group-item .icon-group {
+  justify-content: flex-start;
+  margin-top: 10px;
 }
