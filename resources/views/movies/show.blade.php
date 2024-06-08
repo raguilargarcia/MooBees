@@ -11,6 +11,10 @@
     <p>{{ $tagline }}</p>
     <p>Director: {{ $director }}</p>
 
+    <div>
+    <a href="javascript:history.back()" class="btn btn-secondary mb-3">Volver atrás</a>
+    </div>
+
     @if (Auth::check())
     <!-- Enlace para escribir una reseña si el usuario está autenticado -->
     <a href="{{ route('reviews.create', ['movie' => $movie_id]) }}" class="btn btn-primary mt-3">Escribir una reseña</a>
@@ -46,6 +50,8 @@
     <p>Debes <a href="{{ route('iniciar-sesion') }}">iniciar sesión</a> para escribir una reseña o añadir a la Watchlist.</p>
     @endif
 
+    
+
     <!-- Mostrar reseñas existentes -->
     <h2>Reseñas</h2>
     @foreach($reviews as $review)
@@ -76,6 +82,8 @@
             </button>
         </div>
     </div>
+
+    
 
     <!-- Modal para reportar -->
     <div class="modal fade" id="reportModal{{ $review->id }}" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel{{ $review->id }}" aria-hidden="true">

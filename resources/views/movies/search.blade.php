@@ -14,8 +14,10 @@
 
     <ul id="movies-list">
         @foreach ($movies as $movie)
-            <li data-id="{{ $movie['id'] }}"><img src="https://image.tmdb.org/t/p/w500{{ $movie['poster_path'] }}" alt="{{ $movie['title'] }}">
-            <p>{{ $movie['title'] }}</p></li>
+            <li data-id="{{ $movie['id'] }}">
+                <img src="{{ $movie['poster_path'] ? 'https://image.tmdb.org/t/p/w500' . $movie['poster_path'] : 'https://via.placeholder.com/500x750?text=No+Image+Available' }}" alt="{{ $movie['title'] }}">
+                <p>{{ $movie['title'] }}</p>
+            </li>
         @endforeach
     </ul>
 

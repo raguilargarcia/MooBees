@@ -21,7 +21,7 @@
             </div>
             <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
-        <a href="{{ route('movies.show', ['id' => $movieId]) }}">Volver a la película</a>
+        <a href="{{ route('home') }}">Volver a la página principal</a>
     </div>
 
     <style>

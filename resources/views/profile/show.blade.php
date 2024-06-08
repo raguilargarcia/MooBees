@@ -138,11 +138,12 @@
                 <button type="submit" class="btn btn-primary">Actualizar perfil</button>
             </form>
         </div>
+
     </div>
 </div>
 
 <script>
-    document.getElementById('togglePassword').addEventListener('click', function () {
+    document.getElementById('togglePassword').addEventListener('click', function() {
         const password = document.getElementById('password');
         const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
         password.setAttribute('type', type);
@@ -150,7 +151,7 @@
         this.querySelector('i').classList.toggle('fa-eye-slash');
     });
 
-    document.getElementById('togglePasswordConfirmation').addEventListener('click', function () {
+    document.getElementById('togglePasswordConfirmation').addEventListener('click', function() {
         const passwordConfirmation = document.getElementById('password_confirmation');
         const type = passwordConfirmation.getAttribute('type') === 'password' ? 'text' : 'password';
         passwordConfirmation.setAttribute('type', type);

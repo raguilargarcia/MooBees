@@ -40,7 +40,10 @@ p {
   font-family: 'Roboto', sans-serif; /* Fuente base para párrafos */
 }
 
-a {font-family: 'Roboto', sans-serif;}
+a {
+  font-family: 'Roboto', sans-serif;
+  text-decoration: none!important;
+}
 
 h2 {
 
@@ -55,6 +58,15 @@ hr {
   /* Líneas divisorias en amarillo */
   margin: 20px 0;
   /* Espaciado vertical */
+}
+
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active,
+.btn-primary,
+.btn-primary:hover {
+  text-decoration: none!important;
 }
 
 .input-group .form-control {
@@ -361,6 +373,7 @@ footer {
   text-align: center;
   padding: 10px;
   border-radius: 5px;
+  cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 

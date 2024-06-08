@@ -12,7 +12,7 @@
     <p style="color: green;">¡Correcto! Has adivinado la película.</p>
     @else
     <div>
-        <p><span class="title-representation">{{ $titleRepresentation }}</span></p>
+        <p>Titulo: <span class="title-representation">{{ $titleRepresentation }}</span></p>
 
         @if($step >= 1)
         <p><strong>Géneros:</strong> {{ implode(', ', array_map(fn($genre) => $genre['name'], $movie['genres'])) }}</p>
