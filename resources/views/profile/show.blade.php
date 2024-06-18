@@ -61,20 +61,17 @@
                 <ul class="list-group">
                     @foreach ($user->reviews as $review)
                     @php
-                    // Obtener el título de la película utilizando el ID de la película
                     $apiKey = '6e77f3008b5489918d40768636265cbd';
                     $response = Http::get("https://api.themoviedb.org/3/movie/{$review->movie_id}?api_key={$apiKey}&language=es");
                     $movieData = $response->json();
-
-                    // Verificar si la llamada a la API fue exitosa y si se obtuvieron los datos de la película
                     if ($response->successful() && isset($movieData['title'])) {
-                    $movieTitle = $movieData['title'];
+                        $movieTitle = $movieData['title'];
                     } else {
-                    $movieTitle = 'Película Desconocida';
+                        $movieTitle = 'Película Desconocida';
                     }
                     @endphp
                     <li class="list-group-item d-flex flex-column">
-                        <div>
+                        <div class="review-content">
                             <strong>{{ $movieTitle }}</strong>: {{ $review->comment }}
                         </div>
                         <div class="btn-group mt-2" role="group" aria-label="Basic example">
@@ -138,7 +135,6 @@
                 <button type="submit" class="btn btn-primary">Actualizar perfil</button>
             </form>
         </div>
-
     </div>
 </div>
 
@@ -179,4 +175,11 @@
         return false;
     }
 </script>
+
+<style>
+    .review-content {
+        max-height: 150px; /* Puedes ajustar esta altura según tus necesidades */
+        overflow-y: auto;
+    }
+</style>
 @endsection

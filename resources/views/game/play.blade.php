@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="guess-game-page">
-    <h1>Juego de Adivinación de Películas</h1>
+    <h1>La Colmena</h1>
 
     @if(session('error'))
     <p style="color: red;">{{ session('error') }}</p>

@@ -1,3 +1,29 @@
+/*---------------------------------------------------------------------------------------------------
+                                               GENERAL
+-----------------------------------------------------------------------------------------------------*/
+@keyframes neon-blink {
+
+  0%,
+  2%,
+  4%,
+  6%,
+  100% {
+    box-shadow:
+      0 0 5px #ff0bc2,
+      0 0 10px #ff0bc2,
+      0 0 15px #ff47ff,
+      0 0 20px #ff47ff;
+    border-color: #ff0bc2;
+  }
+
+  1%,
+  3%,
+  5% {
+    box-shadow: none;
+    border-color: #111010;
+  }
+}
+
 html,
 body {
   font-family: 'Roboto', sans-serif;
@@ -5,16 +31,16 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  background-color: #1a1717;
-  /* Fondo negro */
+  background-color: #000;
   color: #FFF;
-  /* Texto blanco */
+
 }
 
 /* El contenedor principal debe ocupar todo el espacio restante */
 main {
   flex: 1;
-  background-color: #1a1717;
+  background-color: #000;
+  color: #FFF;
   /* Asegurar que el fondo del main sea negro */
   padding: 20px;
   /* Añadir padding para evitar que el contenido toque los bordes */
@@ -25,8 +51,17 @@ main {
 
 h1,
 h2,
-h3 {
-  font-family: 'Playfair Display', serif;
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Tilt Neon', serif;
+  color: #ff47ff;
+  text-shadow:
+    0 0 1px #ff47ff,
+    0 0 2px #ff47ff,
+    0 0 4px #ff0bc2,
+    0 0 6px #ff0bc2;
 }
 
 .btn {
@@ -34,30 +69,17 @@ h3 {
 }
 
 .input-group .form-control {
-  font-family: 'Roboto', sans-serif;}
+  font-family: 'Roboto', sans-serif;
+}
 
 p {
-  font-family: 'Roboto', sans-serif; /* Fuente base para párrafos */
+  font-family: 'Roboto', sans-serif;
+  word-wrap: break-word;
 }
 
 a {
   font-family: 'Roboto', sans-serif;
-  text-decoration: none!important;
-}
-
-h2 {
-
-  color: #FFC30B;
-  /* Títulos en amarillo */
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-hr {
-  border-color: #FFC30B;
-  /* Líneas divisorias en amarillo */
-  margin: 20px 0;
-  /* Espaciado vertical */
+  text-decoration: none !important;
 }
 
 .btn-secondary,
@@ -66,7 +88,16 @@ hr {
 .btn-secondary:active,
 .btn-primary,
 .btn-primary:hover {
-  text-decoration: none!important;
+  text-decoration: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn-primary:focus {
+  background-color: #ff47ff !important;
+  border: 1px #ff47ff !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .input-group .form-control {
@@ -83,6 +114,10 @@ hr {
   color: #000;
   /* Texto negro en el botón */
 }
+
+/*---------------------------------------------------------------------------------------------------
+                                               
+-----------------------------------------------------------------------------------------------------*/
 
 /* Estilos para la lista de películas */
 #popular-list,
@@ -127,54 +162,58 @@ hr {
   color: #007bff;
 }
 
-/* Estilos para el carrusel */
-.carousel-item {
-  padding: 0;
-}
-
-.carousel-item .row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 -5px;
-  /* Agrega margen negativo para corregir el espacio entre las columnas */
-}
-
-.carousel-item .col-md-3 {
-  flex: 0 0 25%;
-  /* Ajustar el ancho de cada columna al 25% */
-  max-width: 25%;
-  padding-right: 10px;
-  margin: 0 10px;
-  /* Añadir margen entre los elementos */
-}
-
-
-.carousel-item img {
-  max-width: 100%;
-  height: auto;
-  border: 2px solid #FFC30B;
-  margin: 0 auto;
-  /* Centrando las imágenes */
-}
-
+/* Estilos para el contenedor del carrusel */
 .carousel-inner {
   display: flex;
   flex-wrap: nowrap;
-  /* Evita que las imágenes se envuelvan */
   overflow-x: auto;
-  /* Permite el desplazamiento horizontal si es necesario */
 }
 
+/* Estilos para las diapositivas del carrusel */
+.carousel-item {
+  display: flex;
+  justify-content: space-around;
+  /* Espacio alrededor de cada elemento */
+  align-items: center;
+  flex: 0 0 100%;
+  /* Ocupa el 100% del ancho */
+}
 
-.carousel-item .col-2 {
-  flex: 0 0 20%;
-  max-width: 20%;
+/* Estilos para las imágenes del carrusel */
+.carousel-item .row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  /* Espacio alrededor de cada imagen */
+  align-items: center;
+  width: 100%;
+  /* Asegura que las imágenes ocupen el 100% del contenedor */
+}
+
+.carousel-item .col-md-2 {
+  flex: 0 0 18%;
+  /* Ajusta este valor para que las imágenes ocupen más espacio */
+  max-width: 18%;
+  /* Ajusta este valor para que las imágenes ocupen más espacio */
+  padding: 0 5px;
+  /* Ajusta el padding según sea necesario */
+}
+
+.carousel-item img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  /* Ajusta la imagen para que cubra el contenedor sin distorsionar la relación de aspecto */
+  border-radius: 10px;
+  /* Opcional: añadir borde redondeado a las imágenes */
+  animation: neon-blink 10s infinite;
 }
 
 .row.no-gutters {
   margin-right: 0;
   margin-left: 0;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 
 .row.no-gutters>[class*='col-'] {
@@ -203,14 +242,32 @@ hr {
 
 .review {
   background-color: #111;
-  /* Fondo de las reseñas en gris oscuro */
   border: 1px solid #333;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
   width: 100%;
   box-sizing: border-box;
-  /* Asegura que el padding y el borde se incluyan en el tamaño total */
+  display: flex;
+  align-items: flex-start;
+}
+
+.top-reviews .review-content {
+  display: flex;
+}
+
+.top-reviews .text-content {
+  flex: 1;
+  word-wrap: break-word;
+}
+
+.top-reviews .text-content p{
+  word-wrap: break-word;
+}
+
+.top-reviews .poster {
+  max-width: 150px; /* Ajusta el tamaño según sea necesario */
+  margin-right: 20px;
 }
 
 .review p {
@@ -229,6 +286,8 @@ hr {
   /* Asegurar que ocupe todo el ancho */
   max-width: 1200px;
   /* Limitar el ancho máximo */
+  animation: neon-blink 10s infinite;
+
 }
 
 #suggestions {
@@ -288,15 +347,10 @@ hr {
 }
 
 footer {
-  background-color: #333;
-  /* Fondo del pie de página en gris oscuro */
-  color: #FFD700;
-  /* Texto del pie de página en amarillo */
+  background-color: #ccae05 !important;
   padding: 20px 0;
   text-align: center;
 }
-
-/* Estilos específicos para las páginas */
 
 /* Página de búsqueda de películas */
 .search-page {
@@ -306,10 +360,11 @@ footer {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   margin-top: 20px;
+  animation: neon-blink 10s infinite;
 }
 
 .search-page h2 {
-  color: #FFC30B;
+  color: #ff47ff;
   /* Títulos en amarillo */
   margin-top: 20px;
   text-align: center;
@@ -403,87 +458,195 @@ footer {
 }
 
 .search-page a.btn-primary:hover {
-  background-color: #e0c64e;
-  border-color: #e0c64e;
+  background-color: #ff47ff;
+  border-color: #ff47ff;
   color: #000;
 }
 
-/* Página de detalles de la película */
+/*---------------------------------------------------------------------------------------------------
+                                               MOVIES.SHOW
+-----------------------------------------------------------------------------------------------------*/
+
+
 .movie-detail-container {
-  background-color: #1a1a1a;
   padding: 20px;
-  border-radius: 10px;
-  color: #ffffff;
+  background-color: #111010;
+  border: 1px solid #ff47ff!important;
+  border-radius: 5%;
+  animation: neon-blink 10s infinite;
+}
+
+.movie-detail-container h1,
+.movie-detail-container h2 {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.movie-detail-container h1::after,
+.movie-detail-container h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 1px;
+  background-color: #ff47ff;
+  box-shadow:
+    0 0 5px #ff0bc2,
+    0 0 10px #ff0bc2,
+    0 0 15px #ff47ff,
+    0 0 20px #ff47ff;
+  animation: neon-blink 10s infinite;
+}
+
+.movie-detail-container-info {
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.movie-detail-container-info::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 1px;
+  background-color: #FFC30B;
+  box-shadow: 
+  0 0 5px #ff0bc2,
+  0 0 10px #ff0bc2,
+  0 0 15px #ff47ff,
+  0 0 20px #ff47ff;
+  animation: neon-blink 10s infinite;
 }
 
 .movie-detail-container img {
-  max-width: 100%;
-  border-radius: 10px;
-  margin-bottom: 20px;
+  width: 100%;
+  max-width: 300px;
+  display: block;
+  margin: 0 auto;
 }
 
-.movie-detail-container h1 {
-  color: #FFC30B;
-  margin-bottom: 20px;
-}
-
-.movie-detail-container p {
-  margin-bottom: 10px;
-}
-
-.movie-detail-container a {
-  color: #FFC30B;
-  text-decoration: none;
-}
-
-.movie-detail-container a:hover {
-  text-decoration: underline;
-}
-
-.movie-detail-container .btn-primary {
+.btn-secondary,
+.btn-primary {
   background-color: #FFC30B;
-  border-color: #FFC30B;
+  /* Color miel */
+  border: none;
   color: #000;
+  padding: 10px 20px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px 2px;
+  transition: 0.3s;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.movie-detail-container .btn-primary:hover {
-  background-color: #e0c64e;
-  border-color: #e0c64e;
+.btn-secondary:hover,
+.btn-primary:hover {
+  background-color: #FFC30B;
+  color: #fff;
 }
 
-.movie-detail-container .btn-danger {
-  background-color: #ff4c4c;
-  border-color: #ff4c4c;
+.select-style {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #FFC30B;
+  background-color: #000;
+  color: #fff;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.movie-detail-container .btn-danger:hover {
-  background-color: #e04444;
-  border-color: #e04444;
+.review .rating i {
+  color: #FFC30B;
 }
 
-.movie-detail-container .form-control {
+.icon-container .btn {
+  background: none;
+  border: none;
+  color: #FFC30B;
+  cursor: pointer;
+}
+
+/* Estilos para el modal */
+
+.modal-content {
+  background-color: #111010 !important;
+  color: #fff;
+  border-radius: 10px;
+  border: 1px solid #FFC30B;
+}
+
+.modal-header {
+  border-bottom: 1px solid #FFC30B;
+}
+
+.modal-header .close {
+  color: #FFC30B;
+}
+
+.modal-header .close:hover {
+  color: #ff47ff;
+}
+
+.modal-title {
+  color: #FFC30B;
+  text-shadow: 0 0 3px #FFC30B, 0 0 6px #FFC30B, 0 0 8px #FF6347, 0 0 10px #FF6347;
+}
+
+.form-group label {
+  color: #FFC30B;
+}
+
+.form-control {
   background-color: #333;
   border: none;
   color: #FFF;
 }
 
-.movie-detail-container .form-group label {
-  color: #FFF;
-}
-
-.modal-content {
-  background-color: #1a1a1a;
-  color: #FFF;
-}
-
-.modal-content .btn-secondary {
-  background-color: #333;
-  border-color: #333;
-}
-
-.modal-content .btn-secondary:hover {
+.form-control:focus {
   background-color: #444;
-  border-color: #444;
+  color: #FFF;
+}
+
+.btn-primary {
+  background-color: #FFC30B;
+  border-color: #FFC30B;
+  color: #000;
+}
+
+.btn-primary:hover {
+  background-color: #ff47ff;
+  border-color: #ff47ff;
+}
+
+.movies_show_add_watchlist_btn,
+.movies_show_goback_btn,
+.movies_show_review_btn {
+  margin-top: 20px !important;
+  background-color: #FFC30B !important;
+  border-color: #FFC30B !important;
+  color: #000 !important;
+  text-align: center !important;
+  padding: 10px 20px !important;
+  text-decoration: none !important;
+
+}
+
+.movies_show_add_watchlist_btn:hover,
+.movies_show_goback_btn:hover,
+.movies_show_review_btn:hover {
+  background-color: #ff47ff !important;
+  border-color: #ff47ff !important;
+  color: #000 !important;
 }
 
 /* Página de creación de reseñas */
@@ -495,7 +658,7 @@ footer {
 }
 
 .review-form-container h1 {
-  color: #FFC30B;
+  color: #ff47ff;
   margin-bottom: 20px;
 }
 
@@ -522,8 +685,8 @@ footer {
 }
 
 .review-form-container .btn-primary:hover {
-  background-color: #e0c64e;
-  border-color: #e0c64e;
+  background-color: #ff47ff;
+  border-color: #ff47ff;
 }
 
 .review-form-container a {
@@ -551,7 +714,7 @@ footer {
 }
 
 .review-edit-page h1 {
-  color: #FFC30B;
+  color: #ff47ff;
   margin-bottom: 20px;
   text-align: center;
 }
@@ -579,8 +742,8 @@ footer {
 }
 
 .review-edit-page .btn-primary:hover {
-  background-color: #e0c64e;
-  border-color: #e0c64e;
+  background-color: #ff47ff;
+  border-color: #ff47ff;
 }
 
 /* Limitar el tamaño del div de reseñas y permitir el desplazamiento */
@@ -595,6 +758,32 @@ footer {
   background-color: #1a1a1a;
   /* Fondo gris oscuro */
   border-radius: 5px;
+}
+
+/* Estilos para navegadores basados en WebKit (Chrome, Safari) */
+.reviews-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.reviews-container::-webkit-scrollbar-track {
+  background: #333;
+  /* Color del track de la scrollbar */
+  border-radius: 5px;
+}
+
+.reviews-container::-webkit-scrollbar-thumb {
+  background-color: #FFC30B;
+  /* Color del thumb de la scrollbar */
+  border-radius: 5px;
+  border: 2px solid #333;
+  /* Espacio entre el thumb y el track */
+}
+
+/* Estilos para Firefox */
+.reviews-container {
+  scrollbar-color: #FFC30B #333;
+  /* thumb y track */
+  scrollbar-width: thin;
 }
 
 .edit-btn,
@@ -622,12 +811,6 @@ footer {
   transition: color 0.3s;
 }
 
-.star:hover,
-.star:hover~.star {
-  color: #e0c64e;
-}
-
-
 /* Página del Juego de Adivinación de Películas */
 .guess-game-page {
   padding: 20px;
@@ -635,8 +818,6 @@ footer {
 }
 
 .guess-game-page h1 {
-  color: #FFC30B;
-  /* Títulos en amarillo */
   margin-top: 20px;
 }
 
@@ -676,7 +857,7 @@ footer {
 }
 
 .guess-game-page .form-container button:hover {
-  background-color: #e0c64e;
+  background-color: #ff47ff;
 }
 
 .guess-game-page .form-container #suggestions {
@@ -707,7 +888,7 @@ footer {
 }
 
 .guess-game-page .form-container .btn-next-clue {
-  background-color: #333;
+  background-color: #FFC30B;
   /* Botón de pista siguiente en gris oscuro */
   border: none;
   color: #FFF;
@@ -718,7 +899,7 @@ footer {
 }
 
 .guess-game-page .form-container .btn-next-clue:hover {
-  background-color: #444;
+  background-color: #FFC30B;
 }
 
 /* Estilos para posicionar la lista de sugerencias */
@@ -726,11 +907,11 @@ footer {
   list-style-type: none;
   padding: 0;
   margin: 0;
-  border: 1px solid #ddd;
+  border: 1px solid #000 !important;
   max-height: 150px;
   overflow-y: auto;
   position: absolute;
-  background-color: #fff;
+  background-color: #333 !important;
   width: 100%;
   z-index: 1000;
   left: 0;
@@ -750,7 +931,7 @@ footer {
 }
 
 .suggestions-list li:hover {
-  background-color: #f0f0f0;
+  background-color: #222 !important;
 }
 
 /* Estilos adicionales para el contenedor del formulario */
@@ -820,8 +1001,8 @@ footer {
 }
 
 .list-group-item {
-  background-color: #333;
-  border: 1px solid #444;
+  background-color: #FFC30B;
+  border: 1px solid #FFC30B;
   color: #FFF;
 }
 
@@ -832,8 +1013,8 @@ footer {
 }
 
 .btn-primary:hover {
-  background-color: #e0c64e;
-  border-color: #e0c64e;
+  background-color: #ff47ff;
+  border-color: #ff47ff;
 }
 
 .btn-danger {
@@ -884,7 +1065,9 @@ footer {
 
 .followers-page h1,
 .followings-page h1 {
-  color: #FFC30B;
+  color: #ff47ff;
+  font-size: 2rem;
+  word-wrap: break-word;
   margin-bottom: 20px;
 }
 
@@ -896,16 +1079,16 @@ footer {
 
 .followers-page .list-group-item,
 .followings-page .list-group-item {
-  background-color: #333;
-  border: 1px solid #444;
-  color: #FFF;
-  border-radius: 5px;
-  margin-bottom: 10px;
+  background-color: #333 !important;
+  border: 1px solid #444 !important;
+  color: #FFF !important;
+  border-radius: 5px !important;
+  margin-bottom: 10px !important;
 }
 
 .followers-page .list-group-item:hover,
 .followings-page .list-group-item:hover {
-  background-color: #444;
+  background-color: #444 !important;
 }
 
 .followers-page a,
@@ -916,7 +1099,7 @@ footer {
 
 .followers-page a:hover,
 .followings-page a:hover {
-  color: #e0c64e;
+  color: #ff47ff;
   text-decoration: none;
 }
 
@@ -929,7 +1112,7 @@ footer {
 }
 
 .review .btn-link:hover {
-  color: #d4b34a;
+  color: #ff47ff;
 }
 
 /* Color de los contadores de likes y dislikes */
@@ -941,7 +1124,7 @@ footer {
 
 .like-count:hover,
 .dislike-count:hover {
-  color: #d4b34a;
+  color: #ff47ff;
 }
 
 /* Estilos de la lista de Watchlists */
@@ -982,7 +1165,7 @@ footer {
 }
 
 .watchlists-page h1 {
-  color: #FFC30B;
+  color: #ff47ff;
   margin-bottom: 20px;
 }
 
@@ -1009,8 +1192,8 @@ footer {
 }
 
 .watchlists-page .btn-primary:hover {
-  background-color: #e0c64e;
-  border-color: #e0c64e;
+  background-color: #ff47ff;
+  border-color: #ff47ff;
 }
 
 .watchlists-page .alert-success {
@@ -1041,7 +1224,6 @@ footer {
   color: #FFF;
   margin-bottom: 10px;
   padding: 0;
-  /* Remove padding to let the link fill the entire item */
   position: relative;
 }
 
@@ -1077,7 +1259,7 @@ footer {
 }
 
 .watchlist-page h1 {
-  color: #FFC30B;
+  color: #ff47ff;
   margin-bottom: 20px;
 }
 
@@ -1091,7 +1273,7 @@ footer {
 }
 
 .watchlist-page .card-title {
-  color: #FFC30B;
+  color: #ff47ff;
 }
 
 .watchlist-page .btn-danger {
@@ -1105,13 +1287,13 @@ footer {
 }
 
 .watchlist-page .btn-secondary {
-  background-color: #6c757d;
-  border-color: #6c757d;
+  background-color: #FFC30B;
+  border-color: #FFC30B;
 }
 
 .watchlist-page .btn-secondary:hover {
-  background-color: #5a6268;
-  border-color: #5a6268;
+  background-color: #FFC30B;
+  border-color: #FFC30B;
 }
 
 /* Limitar el tamaño del div de Watchlists y permitir el desplazamiento */
@@ -1142,7 +1324,7 @@ footer {
 }
 
 .login-page h1 {
-  color: #FFC30B;
+  color: #ff47ff;
   margin-bottom: 20px;
   text-align: center;
 }
@@ -1170,8 +1352,8 @@ footer {
 }
 
 .login-page .btn-primary:hover {
-  background-color: #e0c64e;
-  border-color: #e0c64e;
+  background-color: #ff47ff;
+  border-color: #ff47ff;
 }
 
 .login-page .alert-danger {
@@ -1210,7 +1392,7 @@ footer {
 }
 
 .register-page h1 {
-  color: #FFC30B;
+  color: #ff47ff;
   margin-bottom: 20px;
   text-align: center;
 }
@@ -1238,8 +1420,8 @@ footer {
 }
 
 .register-page .btn-primary:hover {
-  background-color: #e0c64e;
-  border-color: #e0c64e;
+  background-color: #ff47ff;
+  border-color: #ff47ff;
 }
 
 .register-page .alert-danger {
@@ -1286,7 +1468,7 @@ footer {
 }
 
 .top-reviews .review .icon-container .btn:hover {
-  color: #d4b34a;
+  color: #ff47ff;
 }
 
 .top-reviews .review .icon-container .count {
@@ -1294,13 +1476,15 @@ footer {
 }
 
 .top-reviews .review .icon-container .count:hover {
-  color: #d4b34a;
+  color: #ff47ff;
 }
 
 .top-reviews .review .rating .fa-star {
   color: #FFD700;
   margin-right: 2px;
 }
+
+
 
 /* Estilos adicionales para los iconos en la página de detalles de la película */
 .movie-detail-container .review .icon-container {
@@ -1324,7 +1508,7 @@ footer {
 }
 
 .movie-detail-container .review .icon-container .btn:hover {
-  color: #d4b34a;
+  color: #ff47ff;
 }
 
 .movie-detail-container .review .icon-container .count {
@@ -1332,7 +1516,7 @@ footer {
 }
 
 .movie-detail-container .review .icon-container .count:hover {
-  color: #d4b34a;
+  color: #ff47ff;
 }
 
 .review .rating .fa-star {
@@ -1354,15 +1538,24 @@ footer {
 }
 
 .icon-group .btn-link:hover {
-  color: #d4b34a;
+  color: #ff47ff;
 }
 
 .list-group-item {
   display: flex;
   flex-direction: column;
+  background-color: #333 !important;
+  border: 1px solid #444 !important;
+  color: #FFF !important;
+  border-radius: 5px !important;
+  margin-bottom: 10px !important;
 }
 
 .list-group-item .icon-group {
   justify-content: flex-start;
   margin-top: 10px;
+}
+
+.noresults {
+  color: #fff;
 }

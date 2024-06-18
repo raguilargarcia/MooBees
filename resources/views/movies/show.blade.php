@@ -50,67 +50,69 @@
     <p>Debes <a href="{{ route('iniciar-sesion') }}">iniciar sesión</a> para escribir una reseña o añadir a la Watchlist.</p>
     @endif
 
-    
-
     <!-- Mostrar reseñas existentes -->
-    <h2>Reseñas</h2>
-    @foreach($reviews as $review)
-    <div class="review">
-        <p>{{ $review->comment }}</p>
-        <div class="rating">
-            @for ($i = 1; $i <= 5; $i++)
-                <i class="fa{{ $i <= $review->rating ? 's' : 'r' }} fa-star"></i>
-            @endfor
-        </div>
-        <p>Escrito por: {{ $review->user->name }}</p>
-        <p>Fecha: {{ $review->created_at->format('d/m/Y') }}</p>
-        <div class="icon-container">
-            <form action="{{ route('reviews.toggle-like', $review->id) }}" method="POST">
-                @csrf
-                <button type="submit" class="btn">
-                    <i class="fas fa-thumbs-up"></i> <span class="like-count">{{ $review->likes->count() }}</span>
-                </button>
-            </form>
-            <form action="{{ route('reviews.toggle-dislike', $review->id) }}" method="POST">
-                @csrf
-                <button type="submit" class="btn">
-                    <i class="fas fa-thumbs-down"></i> <span class="dislike-count">{{ $review->dislikes->count() }}</span>
-                </button>
-            </form>
-            <button type="button" class="btn" data-toggle="modal" data-target="#reportModal{{ $review->id }}">
-                <i class="fas fa-flag"></i>
-            </button>
-        </div>
-    </div>
-
+    @if(count($reviews) > 0)
+        <h2>Reseñas</h2>
+        <div class="reviews-container">
+    @endif
     
-
-    <!-- Modal para reportar -->
-    <div class="modal fade" id="reportModal{{ $review->id }}" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel{{ $review->id }}" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form action="{{ route('reviews.report', $review->id) }}" method="POST">
+        @foreach($reviews as $review)
+        <div class="review">
+            <p>{{ $review->comment }}</p>
+            <div class="rating">
+                @for ($i = 1; $i <= 5; $i++)
+                    <i class="fa{{ $i <= $review->rating ? 's' : 'r' }} fa-star"></i>
+                @endfor
+            </div>
+            <p>Titulo: {{ $title }}</p>
+            <p>Escrito por: {{ $review->user->name }}</p>
+            <p>Fecha: {{ $review->created_at->format('d/m/Y') }}</p>
+            <div class="icon-container">
+                <form action="{{ route('reviews.toggle-like', $review->id) }}" method="POST">
                     @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="reportModalLabel{{ $review->id }}">Reportar Reseña</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="reason">Razón</label>
-                            <textarea name="reason" id="reason" class="form-control" required></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-danger">Reportar</button>
-                    </div>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-thumbs-up"></i> <span class="like-count">{{ $review->likes->count() }}</span>
+                    </button>
                 </form>
+                <form action="{{ route('reviews.toggle-dislike', $review->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn">
+                        <i class="fas fa-thumbs-down"></i> <span class="dislike-count">{{ $review->dislikes->count() }}</span>
+                    </button>
+                </form>
+                <button type="button" class="btn" data-toggle="modal" data-target="#reportModal{{ $review->id }}">
+                    <i class="fas fa-flag"></i>
+                </button>
             </div>
         </div>
+
+        <!-- Modal para reportar -->
+        <div class="modal fade" id="reportModal{{ $review->id }}" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel{{ $review->id }}" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form action="{{ route('reviews.report', $review->id) }}" method="POST">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="reportModalLabel{{ $review->id }}">Reportar Reseña</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="reason">Razón</label>
+                                <textarea name="reason" id="reason" class="form-control" required></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-danger">Reportar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endforeach
     </div>
-    @endforeach
 </div>
 @endsection

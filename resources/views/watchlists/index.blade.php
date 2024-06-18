@@ -2,7 +2,36 @@
 
 @section('content')
 <div class="container watchlists-page">
-    <h1>Crear Watchlists</h1>
+    <h1>Mis Watchlists</h1>
+
+    <!-- Botón de "+" para abrir el modal -->
+    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#createWatchlistModal">
+        <i class="fas fa-plus"></i> Crear Watchlist
+    </button>
+
+    <!-- Modal para crear una nueva watchlist -->
+    <div class="modal fade" id="createWatchlistModal" tabindex="-1" role="dialog" aria-labelledby="createWatchlistModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createWatchlistModalLabel">Crear Watchlist</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('watchlists.store') }}" method="POST" class="create-watchlist-form">
+                        @csrf
+                        <div class="form-group">
+                            <label for="watchlist_name">Nombre de la Watchlist</label>
+                            <input type="text" class="form-control" id="watchlist_name" name="name" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Crear Watchlist</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     @if(session('success'))
     <div class="alert alert-success">
@@ -10,19 +39,7 @@
     </div>
     @endif
 
-    <form action="{{ route('watchlists.store') }}" method="POST" class="create-watchlist-form">
-        @csrf
-        <div class="form-group">
-            <label for="watchlist_name">Nombre de la Watchlist</label>
-            <input type="text" class="form-control" id="watchlist_name" name="name" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Crear Watchlist</button>
-    </form>
-</div>
-
-<div class="container watchlists-page">
-    <h1>Mis Watchlists</h1>
-
+    <!-- Lista de watchlists -->
     <div class="watchlists-container">
         <ul class="list-group mt-4">
             @foreach ($watchlists as $watchlist)

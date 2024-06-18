@@ -31,7 +31,8 @@
             cursor: pointer;
             transition: color 0.3s;
         }
-        .star.filled {
+        .star.filled,
+        .star.hovered {
             color: #f0da5f;
         }
     </style>
@@ -42,19 +43,34 @@
             const ratingInput = document.getElementById('rating');
 
             stars.forEach(star => {
+                star.addEventListener('mouseover', function() {
+                    const rating = this.getAttribute('data-value');
+                    highlightStars(rating);
+                });
+
+                star.addEventListener('mouseout', function() {
+                    highlightStars(ratingInput.value);
+                });
+
                 star.addEventListener('click', function() {
                     const rating = this.getAttribute('data-value');
                     ratingInput.value = rating;
-
-                    stars.forEach(s => {
-                        if (s.getAttribute('data-value') <= rating) {
-                            s.classList.add('filled');
-                        } else {
-                            s.classList.remove('filled');
-                        }
-                    });
+                    highlightStars(rating);
                 });
             });
+
+            function highlightStars(rating) {
+                stars.forEach(star => {
+                    if (star.getAttribute('data-value') <= rating) {
+                        star.classList.add('filled');
+                    } else {
+                        star.classList.remove('filled');
+                    }
+                });
+            }
+
+            // Inicializar el estado inicial de las estrellas
+            highlightStars(ratingInput.value);
         });
 
         function updateCharacterCount(textarea) {

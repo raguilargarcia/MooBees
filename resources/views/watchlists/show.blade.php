@@ -11,10 +11,12 @@
                 <img src="{{ $item->movie_poster_path }}" class="card-img-top" alt="{{ $item->movie_title }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ $item->movie_title }}</h5>
+                    @if (auth()->id() == $watchlist->user_id)
                     <form action="{{ route('watchlists.remove_movie', [$watchlist->id, $item->id]) }}" method="POST" class="d-inline">
                         @csrf
                         <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                     </form>
+                    @endif
                 </div>
             </div>
         </div>

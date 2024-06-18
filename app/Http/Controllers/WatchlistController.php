@@ -34,35 +34,35 @@ class WatchlistController extends Controller
             'movie_title' => 'required|string',
             'movie_poster_path' => 'required|string'
         ]);
-
+    
         // Debugging purpose
         // dd($request->all());
-
+    
         $watchlist = Watchlist::where('id', $watchlist)
             ->where('user_id', Auth::id())
             ->firstOrFail();
-
+    
         WatchlistItem::create([
             'watchlist_id' => $watchlist->id,
             'movie_id' => $request->movie_id,
             'movie_title' => $request->movie_title,
             'movie_poster_path' => $request->movie_poster_path
         ]);
-
+    
         return redirect()->back()->with('success', 'Película añadida a la Watchlist.');
     }
 
     public function removeMovie($watchlistId, $itemId)
-    {
-        $watchlist = Watchlist::where('id', $watchlistId)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
+{
+    $watchlist = Watchlist::where('id', $watchlistId)
+        ->where('user_id', Auth::id())
+        ->firstOrFail();
 
-        $item = WatchlistItem::where('watchlist_id', $watchlistId)->findOrFail($itemId);
-        $item->delete();
+    $item = WatchlistItem::where('watchlist_id', $watchlistId)->findOrFail($itemId);
+    $item->delete();
 
-        return redirect()->back()->with('success', 'Película eliminada de la Watchlist.');
-    }
+    return redirect()->back()->with('success', 'Película eliminada de la Watchlist.');
+}
 
     public function show($watchlistId)
     {

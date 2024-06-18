@@ -12,11 +12,11 @@
         <div class="followers-following">
             <div class="follower-count">
                 <strong>Seguidores</strong>
-                <p>{{ $user->followers->count() }}</p>
+                <p><a href="{{ route('profile.followers', $user->id) }}">{{ $user->followers->count() }}</a></p>
             </div>
             <div class="following-count">
                 <strong>Seguidos</strong>
-                <p>{{ $user->followings->count() }}</p>
+                <p><a href="{{ route('profile.followings', $user->id) }}">{{ $user->followings->count() }}</a></p>
             </div>
         </div>
     </div>
@@ -49,13 +49,25 @@
 
                 // Verificar si la llamada a la API fue exitosa y si se obtuvieron los datos de la película
                 if ($response->successful() && isset($movieData['title'])) {
-                $movieTitle = $movieData['title'];
+                    $movieTitle = $movieData['title'];
                 } else {
-                $movieTitle = 'Película Desconocida';
+                    $movieTitle = 'Película Desconocida';
                 }
                 @endphp
                 <li class="list-group-item">
                     <strong>{{ $movieTitle }}</strong>: {{ $review->comment }}
+                </li>
+            @endforeach
+        </ul>
+    </div>
+
+    <!-- Watchlists del usuario -->
+    <div class="watchlists-container mt-4">
+        <h2>Watchlists de {{ $user->username }}</h2>
+        <ul class="list-group">
+            @foreach ($user->watchlists as $watchlist)
+                <li class="list-group-item">
+                    <a href="{{ route('watchlists.show', $watchlist->id) }}">{{ $watchlist->name }}</a>
                 </li>
             @endforeach
         </ul>

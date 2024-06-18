@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Tilt+Neon&display=swap" rel="stylesheet">
 
     <!-- CSS de Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -18,7 +19,7 @@
 
     <!-- Scripts de Bootstrap y jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <!-- SweetAlert2 CSS -->
@@ -88,7 +89,7 @@
         @yield('content')
     </main>
 
-    <footer class="bg-dark text-center text-white py-3">
+    <footer>
         <!-- Puedes agregar elementos del pie de página aquí -->
         <p>&copy; {{ date('Y') }} MooBees</p>
     </footer>
