@@ -55,7 +55,12 @@
                 }
                 @endphp
                 <li class="list-group-item">
-                    <strong>{{ $movieTitle }}</strong>: {{ $review->comment }}
+                <p style="color: #FFC30B"><strong>{{ $movieTitle }}</strong></p>
+                    <p class="comment-preview break-word">{{ \Illuminate\Support\Str::limit($review->comment, 100) }}</p>
+                    @if (strlen($review->comment) > 100)
+                    <a href="#" class="read-more" data-full-comment="{{ $review->comment }}">Leer más</a>
+                    <a href="#" class="read-less" style="display: none;" data-short-comment="{{ \Illuminate\Support\Str::limit($review->comment, 100) }}">Leer menos</a>
+                    @endif
                 </li>
             @endforeach
         </ul>
@@ -73,4 +78,80 @@
         </ul>
     </div>
 </div>
+
+<script>
+    function insertLineBreaks(text, maxLength) {
+        let result = '';
+        let currentLength = 0;
+
+        while (text.length > 0) {
+            if (currentLength + text.length <= maxLength) {
+                result += text;
+                break;
+            }
+
+            let spaceIndex = text.lastIndexOf(' ', maxLength - currentLength);
+
+            if (spaceIndex === -1) {
+                spaceIndex = maxLength - currentLength;
+            }
+
+            result += text.substring(0, spaceIndex) + '\n';
+            text = text.substring(spaceIndex + 1);
+            currentLength = 0;
+        }
+
+        return result;
+    }
+
+    function formatComment(text) {
+        const maxLength = window.innerWidth <= 425 ? 25 : 100;
+        return insertLineBreaks(text, maxLength);
+    }
+
+    document.querySelectorAll('.read-more').forEach(function(element) {
+        element.addEventListener('click', function(event) {
+            event.preventDefault();
+            const fullComment = this.getAttribute('data-full-comment');
+            const formattedComment = formatComment(fullComment);
+            const commentPreview = this.previousElementSibling;
+            const readLessButton = this.nextElementSibling;
+            commentPreview.textContent = formattedComment;
+            this.style.display = 'none';
+            readLessButton.style.display = 'inline';
+        });
+    });
+
+    document.querySelectorAll('.read-less').forEach(function(element) {
+        element.addEventListener('click', function(event) {
+            event.preventDefault();
+            const shortComment = this.getAttribute('data-short-comment');
+            const commentPreview = this.previousElementSibling.previousElementSibling;
+            const readMoreButton = this.previousElementSibling;
+            commentPreview.textContent = formatComment(shortComment);
+            this.style.display = 'none';
+            readMoreButton.style.display = 'inline';
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.comment-preview').forEach(function(element) {
+            const shortComment = element.textContent;
+            const formattedComment = formatComment(shortComment);
+            element.textContent = formattedComment;
+        });
+    });
+</script>
+
+<style>
+    .break-word {
+        word-break: break-word;
+    }
+
+    @media (max-width: 450px) {
+        .comment-preview {
+            white-space: pre-wrap;
+        }
+    }
+</style>
 @endsection
