@@ -3,38 +3,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Report;
-use App\Models\Review; // Add this line
+use App\Models\Review; // Import the Review class
 use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
     public function index()
     {
+        if (!Auth::user()->admin) {
+            return redirect('/')->with('error', 'No tienes permisos para acceder a esta página.');
+        }
+
         $reportCount = Report::count();
         $reports = Report::with('user', 'review')->get();
 
         return view('reports.index', compact('reportCount', 'reports'));
     }
 
-    public function store(Request $request, $reviewId)
-    {
-        $request->validate([
-            'reason' => 'required|string|max:255',
-        ]);
-
-        $review = Review::findOrFail($reviewId);
-
-        Report::create([
-            'user_id' => Auth::id(),
-            'review_id' => $review->id,
-            'reason' => $request->reason,
-        ]);
-
-        return redirect()->back()->with('success', 'Reseña reportada.');
-    }
-
     public function accept($reportId)
     {
+        if (!Auth::user()->admin) {
+            return redirect('/')->with('error', 'No tienes permisos para acceder a esta página.');
+        }
+
         $report = Report::findOrFail($reportId);
         $report->delete();
 
@@ -43,6 +34,10 @@ class ReportController extends Controller
 
     public function delete($reportId)
     {
+        if (!Auth::user()->admin) {
+            return redirect('/')->with('error', 'No tienes permisos para acceder a esta página.');
+        }
+
         $report = Report::findOrFail($reportId);
         $review = Review::findOrFail($report->review_id);
 

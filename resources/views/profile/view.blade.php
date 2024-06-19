@@ -72,7 +72,7 @@
         <ul class="list-group">
             @foreach ($user->watchlists as $watchlist)
                 <li class="list-group-item">
-                    <a href="{{ route('watchlists.show', $watchlist->id) }}">{{ $watchlist->name }}</a>
+                    <a style="color: #FFC30B" href="{{ route('watchlists.show', $watchlist->id) }}">{{ $watchlist->name }}</a>
                 </li>
             @endforeach
         </ul>
