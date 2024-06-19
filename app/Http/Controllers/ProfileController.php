@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Report; // Add this line to import the Report class
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -15,9 +16,12 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $watchlists = $user->watchlists;
+        $reportCount = Report::count();
+
         return view('profile.show', compact(
             'user',
-            'watchlists'
+            'watchlists',
+            'reportCount'
         ));
     }
 

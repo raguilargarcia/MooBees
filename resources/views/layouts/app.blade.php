@@ -29,7 +29,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 </head>
 
-
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -72,6 +71,18 @@
                         <li class="nav-item">
                             <a class="nav-link text-warning" href="{{ route('watchlists.index') }}">Watchlists</a>
                         </li>
+                    @endauth
+
+                    <!--Si el usuario es admin, aparecera en el header la opción de Reportes con el contador-->
+                    @auth
+                        @if(auth()->user()->admin)
+                            <li class="nav-item">
+                                <a class="nav-link text-warning" href="{{ route('reports.index') }}">
+                                    Reportes
+                                    <span class="badge badge-danger">{{ $reportCount }}</span>
+                                </a>
+                            </li>
+                        @endif
                     @endauth
 
                     <!--Si el usuario está con una sesion iniciada, aparecera en el header la opción de cerrar sesión-->

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Watchlist;
 use App\Models\WatchlistItem;
+use App\Models\Report; // Add this line
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,7 +13,8 @@ class WatchlistController extends Controller
     public function index()
     {
         $watchlists = Auth::user()->watchlists;
-        return view('watchlists.index', compact('watchlists'));
+        $reportCount = Report::count();
+        return view('watchlists.index', compact('watchlists', 'reportCount'));
     }
 
     public function store(Request $request)

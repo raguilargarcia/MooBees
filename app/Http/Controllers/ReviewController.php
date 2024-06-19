@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Models\Report;
 
 class ReviewController extends Controller
 {
@@ -14,7 +15,8 @@ class ReviewController extends Controller
     
     public function create($movieId)
     {
-        return view('reviews.create', compact('movieId'));
+        $reportCount = Report::count();
+        return view('reviews.create', compact('movieId', 'reportCount'));
     }
 
     public function store(Request $request, $movieId)

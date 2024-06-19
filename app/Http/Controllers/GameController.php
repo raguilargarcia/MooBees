@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\ShownMovie;
+use App\Models\Report;
 use Illuminate\Support\Facades\Cache;
 
 class GameController extends Controller
@@ -15,6 +16,8 @@ class GameController extends Controller
     {
         $movie = Cache::get('daily_movie');
         $step = Cache::get('game_step', 1);
+
+        $reportCount = Report::count();
 
         if (!$movie) {
             $movie = $this->getRandomMovie();
@@ -29,7 +32,7 @@ class GameController extends Controller
 
         $titleRepresentation = $this->getTitleRepresentation($movie['title']);
 
-        return view('game.play', ['movie' => $movie, 'step' => $step, 'titleRepresentation' => $titleRepresentation]);
+        return view('game.play', ['movie' => $movie, 'step' => $step, 'titleRepresentation' => $titleRepresentation], compact('reportCount'));
     }
 
     public function nextClue(Request $request)

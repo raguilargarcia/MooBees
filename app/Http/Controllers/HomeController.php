@@ -5,6 +5,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
+use App\Models\Report; // Add this line
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -12,7 +13,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Obtener el usuario autenticado
+        $reportCount = Report::count();
         $user = Auth::user();
 
         $latestReviewsFromFollowing = collect();
@@ -43,6 +44,6 @@ class HomeController extends Controller
             ->take(5)
             ->get();
 
-        return view('home', compact('latestReviewsFromFollowing', 'topReviews'));
+        return view('home', compact('latestReviewsFromFollowing', 'topReviews', 'reportCount'));
     }
 }

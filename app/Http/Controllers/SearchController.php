@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http; // Import the Http facade
-
+use App\Models\Report;
 class SearchController extends Controller
 {
     public function search($query, $page = 1)
     {
+        $reportCount = Report::count();
+        
         // Realiza la búsqueda utilizando la API correspondiente (en tu caso, TMDb)
         $apiKey = '6e77f3008b5489918d40768636265cbd'; // Reemplaza con tu clave de API de TMDb
         $perPage = 20;
@@ -19,6 +21,6 @@ class SearchController extends Controller
         $totalPages = $response->json()['total_pages'];
 
         // Pasa los resultados a la vista junto con la información de paginación y el término de búsqueda
-        return view('movies.search', compact('movies', 'query', 'page', 'totalPages'));
+        return view('movies.search', compact('movies', 'query', 'page', 'totalPages', 'reportCount'));
     }
 }

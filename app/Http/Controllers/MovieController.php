@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Review;
 use App\Models\Watchlist; // Importa el modelo de Watchlist
+use App\Models\Report; // Importa el modelo de Report
 use Illuminate\Support\Facades\Auth; // Importa Auth
 
 class MovieController extends Controller
@@ -19,6 +20,8 @@ class MovieController extends Controller
 
         // Obtener las reseñas de la base de datos
         $reviews = Review::where('movie_id', $id)->with('user')->get();
+
+        $reportCount = Report::count();
 
         // Obtener las watchlists del usuario autenticado
         $watchlists = Auth::check() ? Auth::user()->watchlists : null;
@@ -35,6 +38,7 @@ class MovieController extends Controller
             'reviews' => $reviews,
             'movie_id' => $id,
             'watchlists' => $watchlists,
+            'reportCount' => $reportCount,
         ]);
     }
 

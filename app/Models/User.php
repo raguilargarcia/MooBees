@@ -62,4 +62,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Watchlist::class);
     }
+
+    public function isAdmin()
+{
+    return $this->admin;
+}
 }

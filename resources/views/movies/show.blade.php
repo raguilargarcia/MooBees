@@ -58,33 +58,54 @@
     
         @foreach($reviews as $review)
         <div class="review">
-            <p>{{ $review->comment }}</p>
-            <div class="rating">
-                @for ($i = 1; $i <= 5; $i++)
-                    <i class="fa{{ $i <= $review->rating ? 's' : 'r' }} fa-star"></i>
-                @endfor
-            </div>
-            <p>Titulo: {{ $title }}</p>
-            <p>Escrito por: {{ $review->user->name }}</p>
-            <p>Fecha: {{ $review->created_at->format('d/m/Y') }}</p>
-            <div class="icon-container">
-                <form action="{{ route('reviews.toggle-like', $review->id) }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn">
-                        <i class="fas fa-thumbs-up"></i> <span class="like-count">{{ $review->likes->count() }}</span>
+        @php
+        $apiKey = '6e77f3008b5489918d40768636265cbd';
+        $response = Http::get("https://api.themoviedb.org/3/movie/{$review->movie_id}?api_key={$apiKey}&language=es");
+        $movieData = $response->json();
+        if ($response->successful() && isset($movieData['title'])) {
+        $movieTitle = $movieData['title'];
+        } else {
+        $movieTitle = 'Película Desconocida';
+        }
+        if ($response->successful() && isset($movieData['poster_path'])) {
+        $poster = 'https://image.tmdb.org/t/p/w300' . $movieData['poster_path'];
+        } else {
+        $poster = 'https://via.placeholder.com/300x450';
+        }
+        @endphp
+        <div class="review-content">
+            <div class="text-content">
+                <p ><strong>{{ $movieTitle }}</strong></p>
+                <p class="comment-preview break-word">{{ \Illuminate\Support\Str::limit($review->comment, 100) }}</p>
+                @if (strlen($review->comment) > 100)
+                <a href="#" class="read-more" data-full-comment="{{ $review->comment }}">Leer más</a>
+                <a href="#" class="read-less" style="display: none;" data-short-comment="{{ \Illuminate\Support\Str::limit($review->comment, 100) }}">Leer menos</a>
+                @endif
+                <div class="rating">
+                    @for ($i = 1; $i <= 5; $i++) <i class="fa{{ $i <= $review->rating ? 's' : 'r' }} fa-star"></i>
+                        @endfor
+                </div>
+                <p>{{ $review->user->username }}</p>
+                <div class="icon-container">
+                    <form action="{{ route('reviews.toggle-like', $review->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn">
+                            <i class="fas fa-thumbs-up"></i> <span class="like-count">{{ $review->likes->count() }}</span>
+                        </button>
+                    </form>
+                    <form action="{{ route('reviews.toggle-dislike', $review->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn">
+                            <i class="fas fa-thumbs-down"></i> <span class="dislike-count">{{ $review->dislikes->count() }}</span>
+                        </button>
+                    </form>
+                    <button type="button" class="btn" data-toggle="modal" data-target="#reportModal{{ $review->id }}">
+                        <i class="fas fa-flag"></i>
                     </button>
-                </form>
-                <form action="{{ route('reviews.toggle-dislike', $review->id) }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn">
-                        <i class="fas fa-thumbs-down"></i> <span class="dislike-count">{{ $review->dislikes->count() }}</span>
-                    </button>
-                </form>
-                <button type="button" class="btn" data-toggle="modal" data-target="#reportModal{{ $review->id }}">
-                    <i class="fas fa-flag"></i>
-                </button>
+                </div>
             </div>
         </div>
+    </div>
 
         <!-- Modal para reportar -->
         <div class="modal fade" id="reportModal{{ $review->id }}" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel{{ $review->id }}" aria-hidden="true">
@@ -115,4 +136,5 @@
         @endforeach
     </div>
 </div>
+
 @endsection

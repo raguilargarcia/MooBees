@@ -72,6 +72,12 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
+Route::middleware(['auth'])->group(function () {
+Route::get('/reports', [ReportController::class, 'index'])->name('reports.index')->middleware('auth');
+Route::post('/reports/{report}/accept', [ReportController::class, 'accept'])->name('reports.accept')->middleware('auth');
+Route::post('/reports/{report}/delete', [ReportController::class, 'delete'])->name('reports.delete')->middleware('auth');
+});
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
