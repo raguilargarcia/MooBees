@@ -57,7 +57,7 @@
                     <!--Si el usuario no está registrado, aparecera en el header la opción de iniciar sesión-->
                     @guest
                         <li class="nav-item">
-                            <a class="nav-link text-warning" href="{{ route('iniciar-sesion') }}">Iniciar sesión</a>
+                            <a class="nav-link text-warning" href="{{ route('login') }}">Iniciar sesión</a>
                         </li>
                     @endguest
 

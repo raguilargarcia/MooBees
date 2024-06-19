@@ -14,7 +14,7 @@
     </div>
     @endif
 
-    <form method="POST" action="{{ route('iniciar-sesion') }}">
+    <form method="POST" action="{{ route('login') }}">
         @csrf
         <div class="form-group">
             <label for="username">Nombre de usuario</label>

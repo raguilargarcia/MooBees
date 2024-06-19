@@ -23,7 +23,7 @@ Route::get('/search/{query}/{page}', [SearchController::class, 'search'])->name(
 Route::get('/registro', [RegisterController::class, 'showRegistrationForm'])->name('registro');
 Route::post('/registro', [RegisterController::class, 'register']);
 
-Route::get('/iniciar-sesion', [LoginController::class, 'showLoginForm'])->name('iniciar-sesion');
+Route::get('/iniciar-sesion', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/iniciar-sesion', [LoginController::class, 'login']);
 Route::post('/cerrar-sesion', [LoginController::class, 'logout'])->name('cerrar-sesion');
 

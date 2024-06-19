@@ -47,7 +47,7 @@
 
     @else
     <!-- Mensaje y enlace a la página de inicio de sesión si el usuario no está autenticado -->
-    <p>Debes <a href="{{ route('iniciar-sesion') }}">iniciar sesión</a> para escribir una reseña o añadir a la Watchlist.</p>
+    <p>Debes <a href="{{ route('login') }}">iniciar sesión</a> para escribir una reseña o añadir a la Watchlist.</p>
     @endif
 
     <!-- Mostrar reseñas existentes -->
